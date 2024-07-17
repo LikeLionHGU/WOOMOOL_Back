@@ -27,6 +27,9 @@ public class UserDetail extends Base{
     @JoinColumn(name ="User_Id" )
     private User user;
 
+    public void updateTotal(float amount) {
+        this.todayTotal += amount;
+    }
 
     public static UserDetail of(UserDetailRequest request, float bmi, User user) {
         return UserDetail.builder()
