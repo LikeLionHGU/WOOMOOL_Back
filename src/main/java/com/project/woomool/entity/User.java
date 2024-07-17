@@ -1,5 +1,6 @@
 package com.project.woomool.entity;
 
+import com.project.woomool.controller.request.UserNickNameRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,20 +23,10 @@ public class User extends Base {
     private String email;
     private String role;
     private String name;
-    private byte hasProfile;
+    private String nickName;
 
-
-
-    public User(String username, String email, String role , String idCode) {
-        this.username = username;
-        this.email = email;
-        this.name = idCode;
-        this.hasProfile=0;
+    public void addNickName(UserNickNameRequest request){
+        this.nickName = request.getNickName();
     }
 
-    public void doneProfile() {
-            this.hasProfile = 1;
-    }
-
-    }
-
+}
