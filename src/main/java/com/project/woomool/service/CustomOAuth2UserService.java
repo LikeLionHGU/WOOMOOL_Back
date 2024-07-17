@@ -2,6 +2,7 @@ package com.project.woomool.service;
 
 
 import com.project.woomool.controller.response.loginResponse.GoogleResponse;
+import com.project.woomool.controller.response.loginResponse.KakaoResponse;
 import com.project.woomool.dto.CustomOAuth2UserDTO;
 import com.project.woomool.dto.OAuth2Response;
 import com.project.woomool.dto.UserDTO;
@@ -34,7 +35,16 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2User oAuth2User = super.loadUser(userRequest);
         System.out.println(oAuth2User.getAttributes());
 
-        OAuth2Response oAuth2Response = new GoogleResponse(oAuth2User.getAttributes());
+        String provider = userRequest.getClientRegistration().getRegistrationId();
+
+        OAuth2Response oAuth2Response;
+
+        if(provider.equals("google")){
+            oAuth2Response = new GoogleResponse(oAuth2User.getAttributes());
+
+        }else{
+            oAuth2Response = new KakaoResponse(oAuth2User.getAttributes());
+        }
 
         String name = oAuth2Response.getProvider() + " " + oAuth2Response.getProviderId();
 
