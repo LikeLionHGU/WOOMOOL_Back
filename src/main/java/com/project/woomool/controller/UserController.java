@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
+
     private final UserService userService;
 
     @PostMapping("/nickname")
@@ -24,6 +25,8 @@ public class UserController {
 
         return ResponseEntity.ok(response);
     }
+
+
 
 
 
