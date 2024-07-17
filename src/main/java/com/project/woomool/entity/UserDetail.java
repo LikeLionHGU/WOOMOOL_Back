@@ -20,6 +20,8 @@ public class UserDetail extends Base{
     private float height;
     private float bmi;
     private float recommendation;
+    private float todayTotal;
+    private byte hasDrank;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="User_Id" )
@@ -32,6 +34,8 @@ public class UserDetail extends Base{
             .height(request.getHeight())
             .bmi(bmi)
             .recommendation((request.getHeight()+ request.getWeight())/100)
+            .hasDrank((byte) 0)
+            .todayTotal(0)
             .user(user)
             .build();
     }
