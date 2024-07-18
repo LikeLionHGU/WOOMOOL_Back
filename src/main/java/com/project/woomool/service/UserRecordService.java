@@ -6,6 +6,7 @@ import com.project.woomool.dto.UserRecordDto;
 import com.project.woomool.entity.User;
 import com.project.woomool.entity.UserDetail;
 import com.project.woomool.entity.UserRecord;
+import com.project.woomool.repository.TeamRepository;
 import com.project.woomool.repository.UserDetailRepository;
 import com.project.woomool.repository.UserRecordRepository;
 import com.project.woomool.repository.UserRepository;
@@ -20,6 +21,7 @@ public class UserRecordService {
 
     private final UserRecordRepository userRecordRepository;
     private final UserDetailRepository userDetailRepository;
+    private final TeamRepository teamRepository;
     private final UserRepository userRepository;
 
     @Transactional
@@ -29,7 +31,10 @@ public class UserRecordService {
             UserRecordDto dto =  UserRecordDto.of(request.getAmount());
             UserRecord userRecord = UserRecord.of(dto,user);
             userDetail.updateTotal(request.getAmount());
+
             userRecordRepository.save(userRecord);
+
+
     }
 
 

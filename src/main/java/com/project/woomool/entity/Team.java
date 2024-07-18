@@ -33,4 +33,14 @@ public class Team {
             .build();
     }
 
-}
+    public void updateTotal(float amount) {
+        this.groupTotal += amount;
+    }
+
+    public void updateByJoin(float recommendation , float groupTotal) {
+            this.recommendation += recommendation;
+            this.groupTotal += groupTotal;
+        }
+    }
+
+
