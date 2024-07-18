@@ -24,9 +24,10 @@ public class UserRecordController {
         userRecordService.addRecord(request, userDto);
     }
 
-//    @GetMapping("/getRecords")
-//    public ResponseEntity<UserRecordListResponse> getRecords(@AuthenticationPrincipal CustomOAuth2UserDTO userDto) {
-//        return ResponseEntity.ok(userRecordService.getRecords(userDto));
-//    }
+    @GetMapping("/getRecords")
+    public ResponseEntity<UserRecordListResponse> getRecords(@AuthenticationPrincipal CustomOAuth2UserDTO userDto) {
+        UserRecordListResponse response = new UserRecordListResponse(userRecordService.getRecords(userDto));
+        return ResponseEntity.ok(response);
+    }
 
 }

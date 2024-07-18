@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserRecordService {
@@ -34,7 +36,13 @@ public class UserRecordService {
 
             userRecordRepository.save(userRecord);
 
+    }
 
+    public List<UserRecordDto> getRecords(CustomOAuth2UserDTO userDto) {
+        User user = userRepository.findByEmail(userDto.getEmail());
+        UserDetail userDetail = userDetailRepository.findByUser(user);
+        List<UserRecordDto> records = userRecordRepository.findAllByUserId(userDetail.getId());
+        return records;
     }
 
 
