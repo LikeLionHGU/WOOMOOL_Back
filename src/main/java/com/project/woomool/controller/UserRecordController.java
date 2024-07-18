@@ -27,7 +27,7 @@ public class UserRecordController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/getRecords/{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<UserRecordListResponse> getRecordsById(@PathVariable Long userId) {
         UserRecordListResponse response = new UserRecordListResponse(userRecordService.getRecordsById(userId));
         return ResponseEntity.ok(response);
