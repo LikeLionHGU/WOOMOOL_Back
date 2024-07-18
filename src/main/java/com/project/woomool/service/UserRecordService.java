@@ -15,6 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserRecordService {
@@ -34,7 +37,21 @@ public class UserRecordService {
 
             userRecordRepository.save(userRecord);
 
+    }
 
+    public List<UserRecordDto> getRecords(CustomOAuth2UserDTO userDto) {
+        User user = userRepository.findByEmail(userDto.getEmail());
+        UserDetail userDetail = userDetailRepository.findByUser(user);
+        List<UserRecordDto> records = userRecordRepository.findAllByUserId(userDetail.getId());
+        return records;
+    }
+
+    public List<UserRecordDto> getRecordsById(Long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        User user = optionalUser.orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+        UserDetail userDetail = userDetailRepository.findByUser(user);
+        List<UserRecordDto> records = userRecordRepository.findAllByUserId(userDetail.getId());
+        return records;
     }
 
 
