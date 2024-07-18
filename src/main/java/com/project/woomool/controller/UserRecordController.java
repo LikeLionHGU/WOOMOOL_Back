@@ -8,10 +8,7 @@ import com.project.woomool.service.UserRecordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,6 +24,12 @@ public class UserRecordController {
     @GetMapping("/getRecords")
     public ResponseEntity<UserRecordListResponse> getRecords(@AuthenticationPrincipal CustomOAuth2UserDTO userDto) {
         UserRecordListResponse response = new UserRecordListResponse(userRecordService.getRecords(userDto));
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/getRecords/{userId}")
+    public ResponseEntity<UserRecordListResponse> getRecordsById(@PathVariable Long userId) {
+        UserRecordListResponse response = new UserRecordListResponse(userRecordService.getRecordsById(userId));
         return ResponseEntity.ok(response);
     }
 
