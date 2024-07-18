@@ -116,7 +116,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
     }
 
-    private void setErrorResponse(
+    public static void setErrorResponse(
             HttpServletResponse response, String message, HttpStatus httpStatus) {
         ObjectMapper objectMapper = new ObjectMapper();
         response.setStatus(httpStatus.value());

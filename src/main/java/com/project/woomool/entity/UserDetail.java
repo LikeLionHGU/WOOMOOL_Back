@@ -36,7 +36,7 @@ public class UserDetail extends Base{
             .weight(request.getWeight())
             .height(request.getHeight())
             .bmi(bmi)
-            .recommendation((request.getHeight()+ request.getWeight())/100)
+            .recommendation(((request.getHeight()+ request.getWeight())/100)*1000)
             .hasDrank((byte) 0)
             .todayTotal(0)
             .user(user)
