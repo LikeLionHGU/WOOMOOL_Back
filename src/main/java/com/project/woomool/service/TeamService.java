@@ -9,6 +9,7 @@ import com.project.woomool.entity.Team;
 import com.project.woomool.entity.TeamDetail;
 import com.project.woomool.entity.User;
 import com.project.woomool.entity.UserDetail;
+import com.project.woomool.exception.AlreadyJoinedException;
 import com.project.woomool.exception.TeamCodeNotExistsException;
 import com.project.woomool.repository.TeamDetailRepository;
 import com.project.woomool.repository.TeamRepository;
@@ -21,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.rmi.AlreadyBoundException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
@@ -42,6 +44,11 @@ public class TeamService {
 
         String groupCode = generateTeamCode(request.getName());
 
+        while(teamRepository.existsTeamByCode(groupCode)){
+            groupCode = generateTeamCode(request.getName());
+        }
+
+
         TeamDto groupDto = TeamDto.of(request.getName(), initAmount, currentAmount, groupCode);
 
         teamRepository.save(Team.of(groupDto));
@@ -49,18 +56,21 @@ public class TeamService {
     }
 
     @Transactional
-    public void joinTeam(TeamJoinRequest request, CustomOAuth2UserDTO userDto) {
+    public void joinTeam(TeamJoinRequest request, CustomOAuth2UserDTO userDto){
 
 
         if(!teamRepository.existsTeamByCode(request.getTeamCode())){
             throw new TeamCodeNotExistsException();
         }
             User user = userRepository.findByEmail(userDto.getEmail());
+            Team team = teamRepository.findTeamByCode(request.getTeamCode());
+            if(teamDetailRepository.existsByUser(user) && teamDetailRepository.existsByTeam(team)){
+                throw new AlreadyJoinedException();
+            }
+
             UserDetail userDetail = userDetailRepository.findByUser(user);
             float amount = userDetail.getRecommendation();
             float currentAmount = userDetail.getTodayTotal();
-
-            Team team = teamRepository.findTeamByCode(request.getTeamCode());
 
             TeamDetail teamDetail = TeamDetail.of(user, team);
             teamDetailRepository.save(teamDetail);
