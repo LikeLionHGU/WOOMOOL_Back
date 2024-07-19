@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -51,19 +52,45 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         String token = jwtUtil.createJwt(username, email,role, 1000 * 60 * 60 * 24 * 30L);
 
-        response.addCookie(createCookie("Authorization", token));
-        response.sendRedirect("http://localhost:3000");
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Expose-Headers", "Authorization");
+
+        // Authorization 헤더에 토큰 설정
+        response.setHeader("Authorization", "Bearer " + token);
+
+        // 클라이언트에게 성공 메시지와 함께 응답
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{\"success\":true,\"message\":\"Authentication successful\"}");
     }
 
-    public Cookie createCookie(String key, String value) {
-
-        Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(60*60*60*60);
-//        cookie.setSecure(false);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-//        cookie.setDomain("localhost");
-//        cookie.setAttribute("SameSite", "None");
-        return cookie;
     }
-}
+
+
+//    public void addSameSiteCookieAttribute(HttpServletResponse response) {
+//        Collection<String> headers = response.getHeaders("Set-Cookie");
+//        boolean firstHeader = true;
+//        for (String header : headers) {
+//            if (firstHeader) {
+//                response.setHeader("Set-Cookie", String.format("%s; %s", header, "SameSite=None"));
+//                firstHeader = false;
+//                continue;
+//            }
+//            response.addHeader("Set-Cookie", String.format("%s; %s", header, "SameSite=None"));
+//        }
+//    }
+
+    //    public Cookie createCookie(String key, String value) {
+//
+//        Cookie cookie = new Cookie(key, value);
+//        cookie.setMaxAge(60*60*60*60);
+////        cookie.setSecure(false);
+//        cookie.setHttpOnly(true);
+//        cookie.setPath("/");
+////        cookie.setDomain("localhost");
+////        cookie.setAttribute("SameSite", "None");
+//        return cookie;
+//    }
+
+
