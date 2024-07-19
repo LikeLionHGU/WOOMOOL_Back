@@ -66,31 +66,3 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     }
 
     }
-
-
-//    public void addSameSiteCookieAttribute(HttpServletResponse response) {
-//        Collection<String> headers = response.getHeaders("Set-Cookie");
-//        boolean firstHeader = true;
-//        for (String header : headers) {
-//            if (firstHeader) {
-//                response.setHeader("Set-Cookie", String.format("%s; %s", header, "SameSite=None"));
-//                firstHeader = false;
-//                continue;
-//            }
-//            response.addHeader("Set-Cookie", String.format("%s; %s", header, "SameSite=None"));
-//        }
-//    }
-
-    //    public Cookie createCookie(String key, String value) {
-//
-//        Cookie cookie = new Cookie(key, value);
-//        cookie.setMaxAge(60*60*60*60);
-////        cookie.setSecure(false);
-//        cookie.setHttpOnly(true);
-//        cookie.setPath("/");
-////        cookie.setDomain("localhost");
-////        cookie.setAttribute("SameSite", "None");
-//        return cookie;
-//    }
-
-
