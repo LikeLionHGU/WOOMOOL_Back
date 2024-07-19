@@ -44,6 +44,11 @@ public class TeamService {
 
         String groupCode = generateTeamCode(request.getName());
 
+        while(teamRepository.existsTeamByCode(groupCode)){
+            groupCode = generateTeamCode(request.getName());
+        }
+
+
         TeamDto groupDto = TeamDto.of(request.getName(), initAmount, currentAmount, groupCode);
 
         teamRepository.save(Team.of(groupDto));
