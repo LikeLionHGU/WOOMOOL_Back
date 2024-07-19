@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TeamDetailRepository extends JpaRepository<TeamDetail,Long> {
     TeamDetail findTeamDetailByUser(User user);
+    Boolean existsByUser(User user);
 }
