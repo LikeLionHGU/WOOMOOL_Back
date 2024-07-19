@@ -63,16 +63,14 @@ public class TeamService {
             throw new TeamCodeNotExistsException();
         }
             User user = userRepository.findByEmail(userDto.getEmail());
-
-            if(teamDetailRepository.existsByUser(user)){
+            Team team = teamRepository.findTeamByCode(request.getTeamCode());
+            if(teamDetailRepository.existsByUser(user) && teamDetailRepository.existsByTeam(team)){
                 throw new AlreadyJoinedException();
             }
 
             UserDetail userDetail = userDetailRepository.findByUser(user);
             float amount = userDetail.getRecommendation();
             float currentAmount = userDetail.getTodayTotal();
-
-            Team team = teamRepository.findTeamByCode(request.getTeamCode());
 
             TeamDetail teamDetail = TeamDetail.of(user, team);
             teamDetailRepository.save(teamDetail);
