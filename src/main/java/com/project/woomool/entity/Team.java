@@ -41,7 +41,7 @@ public class Team {
     public void plusDateCount(){this.dateCount++;}
 
     public void updateByJoin(float recommendation ) {
-            this.recommendation += (7*recommendation);
+            this.recommendation += ((7-dateCount)*recommendation);
         }
     }
 
