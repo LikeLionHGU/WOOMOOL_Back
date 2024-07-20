@@ -37,7 +37,7 @@ public class UserDetailService {
         return UserDetailDto.of(userDetail);
     }
 
-    @Scheduled(cron = "58 40 18 * * *")
+    @Scheduled(cron = "58 59 23 * * *")
     @Transactional
     public void autoUpdateWater() {
         List<UserDetail> userDetails = userDetailRepository.findAll();
