@@ -19,6 +19,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -26,6 +27,7 @@ import java.rmi.AlreadyBoundException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -84,6 +86,20 @@ public class TeamService {
             return encoded.substring(0, 4).toUpperCase();
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Failed to generate team code", e);
+        }
+    }
+
+    @Scheduled(cron = "59 59 23 * * *")
+    @Transactional
+    public void autoUpdateRestDay() {
+        List<Team> teams = teamRepository.findAll();
+        for (Team team : teams) {
+            if(team.getDateCount()>=6){
+                team.setDateCount(0);
+            }else {
+                team.plusDateCount();
+            }
+            teamRepository.save(team);
         }
     }
 

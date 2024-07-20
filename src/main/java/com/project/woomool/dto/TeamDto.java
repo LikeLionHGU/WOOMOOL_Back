@@ -12,6 +12,8 @@ public class TeamDto {
 
     private String name;
     private String code;
+    private int completeLevel; //팀의 달성 횟수
+    private int dateCount;
     private float recommendation;
     private float groupTotal;
 
@@ -20,6 +22,7 @@ public class TeamDto {
         return TeamDto.builder()
             .name(name)
             .recommendation((7*recommendation))
+            .dateCount(0)
             .code(code)
             .build();
     }
