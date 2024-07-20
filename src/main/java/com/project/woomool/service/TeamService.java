@@ -40,7 +40,6 @@ public class TeamService {
         User user = userRepository.findByEmail(userDto.getEmail());
         UserDetail userDetail = userDetailRepository.findByUser(user);
         float initAmount = userDetail.getRecommendation();
-        float currentAmount = userDetail.getTodayTotal();
 
         String groupCode = generateTeamCode(request.getName());
 
@@ -49,7 +48,7 @@ public class TeamService {
         }
 
 
-        TeamDto groupDto = TeamDto.of(request.getName(), initAmount, currentAmount, groupCode);
+        TeamDto groupDto = TeamDto.of(request.getName(), initAmount, groupCode);
 
         teamRepository.save(Team.of(groupDto));
         return groupDto;
@@ -70,12 +69,11 @@ public class TeamService {
 
             UserDetail userDetail = userDetailRepository.findByUser(user);
             float amount = userDetail.getRecommendation();
-            float currentAmount = userDetail.getTodayTotal();
 
             TeamDetail teamDetail = TeamDetail.of(user, team);
             teamDetailRepository.save(teamDetail);
 
-            team.updateByJoin(amount, currentAmount);
+            team.updateByJoin(amount);
         }
 
     private String generateTeamCode(String name) {

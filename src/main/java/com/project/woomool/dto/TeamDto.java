@@ -15,12 +15,11 @@ public class TeamDto {
     private float recommendation;
     private float groupTotal;
 
-    public static TeamDto of(String name , float recommendation , float groupTotal , String code){
+    public static TeamDto of(String name , float recommendation , String code){
 
         return TeamDto.builder()
             .name(name)
-            .recommendation(recommendation)
-            .groupTotal(groupTotal)
+            .recommendation((7*recommendation))
             .code(code)
             .build();
     }

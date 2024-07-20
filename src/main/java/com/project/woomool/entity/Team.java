@@ -21,6 +21,7 @@ public class Team {
 
     private String name;
     private String code;
+    private int completeLevel; //팀의 달성 횟수
     private float recommendation;
     private float groupTotal;
 
@@ -37,9 +38,8 @@ public class Team {
         this.groupTotal += amount;
     }
 
-    public void updateByJoin(float recommendation , float groupTotal) {
-            this.recommendation += recommendation;
-            this.groupTotal += groupTotal;
+    public void updateByJoin(float recommendation ) {
+            this.recommendation += (7*recommendation);
         }
     }
 
