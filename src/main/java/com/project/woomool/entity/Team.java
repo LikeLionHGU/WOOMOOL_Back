@@ -22,7 +22,8 @@ public class Team {
     private String name;
     private String code;
     private int completeLevel; //팀의 달성 횟수
-    private int dateCount;
+    private int dateCount; //일주일중 지난 날
+    private float finalRecommendation; //최종 물 양
     private float recommendation;
     private float groupTotal;
 
@@ -30,6 +31,9 @@ public class Team {
         return Team.builder()
             .name(dto.getName())
             .code(dto.getCode())
+            .finalRecommendation(dto.getFinalRecommendation())
+            .completeLevel(dto.getCompleteLevel())
+            .dateCount(dto.getDateCount())
             .recommendation(dto.getRecommendation())
             .groupTotal(dto.getGroupTotal())
             .build();
@@ -40,8 +44,11 @@ public class Team {
     }
     public void plusDateCount(){this.dateCount++;}
 
+    public void plusCompleteLevel(){this.completeLevel++;}
+
     public void updateByJoin(float recommendation ) {
             this.recommendation += ((7-dateCount)*recommendation);
+            this.finalRecommendation += (7*recommendation);
         }
     }
 

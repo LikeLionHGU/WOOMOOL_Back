@@ -73,9 +73,10 @@ public class TeamService {
             float amount = userDetail.getRecommendation();
 
             TeamDetail teamDetail = TeamDetail.of(user, team);
-            teamDetailRepository.save(teamDetail);
 
             team.updateByJoin(amount);
+            teamDetailRepository.save(teamDetail);
+            teamRepository.save(team);
         }
 
     private String generateTeamCode(String name) {
@@ -89,19 +90,28 @@ public class TeamService {
         }
     }
 
-    @Scheduled(cron = "59 59 23 * * *")
+    @Scheduled(cron = "59 40 18 * * *")
     @Transactional
     public void autoUpdateRestDay() {
         List<Team> teams = teamRepository.findAll();
         for (Team team : teams) {
             if(team.getDateCount()>=6){
+
+                if(team.getGroupTotal()>=(team.getRecommendation()*0.8)){
+                    team.plusCompleteLevel();
+                }
+
+                team.setRecommendation(team.getFinalRecommendation());
+                team.setGroupTotal(0);
                 team.setDateCount(0);
+
             }else {
                 team.plusDateCount();
             }
             teamRepository.save(team);
         }
     }
+
 
 
 }
