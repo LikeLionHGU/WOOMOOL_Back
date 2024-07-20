@@ -90,7 +90,7 @@ public class TeamService {
         }
     }
 
-    @Scheduled(cron = "59 40 18 * * *")
+    @Scheduled(cron = "59 59 23 * * *")
     @Transactional
     public void autoUpdateRestDay() {
         List<Team> teams = teamRepository.findAll();
