@@ -21,6 +21,9 @@ public class UserDetail extends Base{
     private float bmi;
     private float recommendation;
     private float todayTotal;
+    private int hasDrankLevel;
+    private boolean hasDrankToday;
+    private boolean warnDrankToday;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="User_Id" )
@@ -30,12 +33,17 @@ public class UserDetail extends Base{
         this.todayTotal += amount;
     }
 
+    public void addDrankLevel(){this.hasDrankLevel++;}
+
     public static UserDetail of(UserDetailRequest request, float bmi, User user) {
         return UserDetail.builder()
             .weight(request.getWeight())
             .height(request.getHeight())
             .bmi(bmi)
             .recommendation(((request.getHeight()+ request.getWeight())/100)*1000)
+            .hasDrankToday(false)
+            .warnDrankToday(false)
+            .hasDrankLevel(0)
             .todayTotal(0)
             .user(user)
             .build();

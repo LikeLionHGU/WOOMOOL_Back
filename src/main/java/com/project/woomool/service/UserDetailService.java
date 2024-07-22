@@ -46,6 +46,11 @@ public class UserDetailService {
             Team team = teamDetail.getTeam();
             team.updateTotal(userDetail.getTodayTotal());
             userDetail.setTodayTotal(0);
+            if(userDetail.isHasDrankToday()){
+                userDetail.addDrankLevel();
+            }
+            userDetail.setHasDrankToday(false);
+            userDetail.setWarnDrankToday(false);
             userDetailRepository.save(userDetail);
             teamRepository.save(team);
         }
