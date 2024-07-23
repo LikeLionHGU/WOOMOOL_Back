@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import com.project.woomool.jwt.JWTUtil;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -56,6 +58,15 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Expose-Headers", "Authorization");
 
+        response.setStatus(HttpServletResponse.SC_OK);
+        String encodedToken = URLEncoder.encode(token, StandardCharsets.UTF_8);
+        String successMessage = URLEncoder.encode("Authentication successful", StandardCharsets.UTF_8);
+
+        String redirectUrl = String.format("http://localhost:3000/logincb?status=success&jwt=%s&message=%s", encodedToken, successMessage);
+
+        // 리다이렉트
+
+
         // Authorization 헤더에 토큰 설정
         response.setHeader("Authorization", "Bearer " + token);
 
@@ -63,6 +74,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write("{\"success\":true,\"message\":\"Authentication successful\"}");
-    }
+
+        response.sendRedirect(redirectUrl);
 
     }
+
+}
