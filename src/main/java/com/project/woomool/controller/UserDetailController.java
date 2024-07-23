@@ -4,6 +4,7 @@ import com.project.woomool.controller.request.UserDetailRequest;
 import com.project.woomool.controller.request.UserNickNameRequest;
 import com.project.woomool.controller.response.user.UserResponse;
 import com.project.woomool.controller.response.userDetail.UserDetailResponse;
+import com.project.woomool.controller.response.userRecordResponse.UserRecordListResponse;
 import com.project.woomool.dto.CustomOAuth2UserDTO;
 import com.project.woomool.dto.UserDetailDto;
 import com.project.woomool.service.UserDetailService;
@@ -28,10 +29,10 @@ public class UserDetailController {
         return ResponseEntity.ok(response);
     }
 
-//    @GetMapping("/getDetail")
-//    public  ResponseEntity<UserDetailResponse> getDetail(@AuthenticationPrincipal CustomOAuth2UserDTO userDto) {
-//
-//        return ResponseEntity.ok();
-//    }
+    @GetMapping("/get")
+    public  ResponseEntity<UserDetailResponse> getDetail(@AuthenticationPrincipal CustomOAuth2UserDTO userDto) {
+        UserDetailResponse response = new UserDetailResponse(userDetailService.getUserDetail(userDto));
+        return ResponseEntity.ok(response);
+    }
 
 }

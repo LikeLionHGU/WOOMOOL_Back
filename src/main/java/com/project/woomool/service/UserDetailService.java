@@ -3,6 +3,7 @@ package com.project.woomool.service;
 import com.project.woomool.controller.request.UserDetailRequest;
 import com.project.woomool.dto.CustomOAuth2UserDTO;
 import com.project.woomool.dto.UserDetailDto;
+import com.project.woomool.dto.UserRecordDto;
 import com.project.woomool.entity.Team;
 import com.project.woomool.entity.TeamDetail;
 import com.project.woomool.entity.User;
@@ -37,6 +38,12 @@ public class UserDetailService {
         return UserDetailDto.of(userDetail);
     }
 
+    public UserDetailDto getUserDetail(CustomOAuth2UserDTO userDto) {
+        User user = userRepository.findByEmail(userDto.getEmail());
+        UserDetail userDetail = userDetailRepository.findByUser(user);
+        return UserDetailDto.of(userDetail);
+    }
+
     @Scheduled(cron = "58 59 23 * * *")
     @Transactional
     public void autoUpdateWater() {
@@ -55,6 +62,8 @@ public class UserDetailService {
             teamRepository.save(team);
         }
     }
+
+
 
 
 
