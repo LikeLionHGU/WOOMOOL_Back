@@ -18,6 +18,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +41,13 @@ public class UserDetailService {
 
     public UserDetailDto getUserDetail(CustomOAuth2UserDTO userDto) {
         User user = userRepository.findByEmail(userDto.getEmail());
+        UserDetail userDetail = userDetailRepository.findByUser(user);
+        return UserDetailDto.of(userDetail);
+    }
+
+    public UserDetailDto getUserDetailByUserId(Long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        User user = optionalUser.orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
         UserDetail userDetail = userDetailRepository.findByUser(user);
         return UserDetailDto.of(userDetail);
     }
