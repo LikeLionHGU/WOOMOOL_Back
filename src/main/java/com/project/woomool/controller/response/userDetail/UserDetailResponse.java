@@ -13,6 +13,9 @@ public class UserDetailResponse {
     private float bmi;
     private float recommendation;
     private float todayTotal;
+    private int hasDrankLevel;
+    private boolean hasDrankToday;
+    private boolean warnDrankToday;
 
     public UserDetailResponse (UserDetailDto dto) {
             this.weight = dto.getWeight();
@@ -20,5 +23,8 @@ public class UserDetailResponse {
             this.bmi = dto.getBmi();
             this.todayTotal = dto.getTodayTotal();
             this.recommendation = dto.getRecommendation();
+            this.hasDrankLevel = dto.getHasDrankLevel();
+            this.hasDrankToday = dto.isHasDrankToday();
+            this.warnDrankToday = dto.isWarnDrankToday();
     }
 }
