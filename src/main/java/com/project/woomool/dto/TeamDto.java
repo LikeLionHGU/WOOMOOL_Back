@@ -1,6 +1,7 @@
 package com.project.woomool.dto;
 
 
+import com.project.woomool.entity.Team;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,8 +27,22 @@ public class TeamDto {
             .finalRecommendation(0)
             .completeLevel(0)
             .dateCount(0)
+            .groupTotal(0)
             .code(code)
             .build();
+    }
+
+    public static TeamDto of(Team team){
+
+        return TeamDto.builder()
+                .name(team.getName())
+                .recommendation(team.getRecommendation())
+                .finalRecommendation(team.getFinalRecommendation())
+                .groupTotal(team.getGroupTotal())
+                .completeLevel(team.getCompleteLevel())
+                .dateCount(team.getDateCount())
+                .code(team.getCode())
+                .build();
     }
 
 }

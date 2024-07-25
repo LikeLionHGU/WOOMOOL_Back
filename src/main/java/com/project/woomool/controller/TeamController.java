@@ -4,6 +4,8 @@ import com.project.woomool.controller.request.TeamJoinRequest;
 import com.project.woomool.controller.request.TeamRequest;
 import com.project.woomool.controller.response.team.TeamJoinResponse;
 import com.project.woomool.controller.response.team.TeamResponse;
+import com.project.woomool.controller.response.teamDetail.TeamListResponse;
+import com.project.woomool.controller.response.userDetail.UserDetailResponse;
 import com.project.woomool.dto.CustomOAuth2UserDTO;
 import com.project.woomool.dto.TeamDto;
 import com.project.woomool.exception.TeamCodeNotExistsException;
@@ -11,10 +13,7 @@ import com.project.woomool.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.rmi.AlreadyBoundException;
 
@@ -40,4 +39,16 @@ public class TeamController {
         TeamJoinResponse response = new TeamJoinResponse(request.getTeamCode());
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/{groupId}")
+    public  ResponseEntity<TeamResponse> getGroupInfo(@PathVariable Long groupId) {
+        TeamResponse response = new TeamResponse(teamService.getGroupInfo(groupId));
+        return ResponseEntity.ok(response);
+    }
+
+//    @GetMapping("/getGroupCode")
+//    public  ResponseEntity<TeamListResponse> getGroupList(@AuthenticationPrincipal CustomOAuth2UserDTO userDto) {
+//        TeamListResponse response = new TeamListResponse(teamService.getGroupList(userDto));
+//        return ResponseEntity.ok(response);
+//    }
 }
