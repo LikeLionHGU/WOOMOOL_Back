@@ -9,7 +9,6 @@ import com.project.woomool.exception.DoNotLoginException;
 import com.project.woomool.exception.ExpiredTokenException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
@@ -35,9 +34,7 @@ public class JWTFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         try {
-            String authorization = null;
-            Cookie[] cookies = request.getCookies();
-
+            String authorization = request.getHeader("Authorization");
             String requestUri = request.getRequestURI();
 
             if(requestUri.matches("/error")){
@@ -63,24 +60,13 @@ public class JWTFilter extends OncePerRequestFilter {
             }
 
 
-            if (cookies != null) {
-                for (Cookie cookie : cookies) {
-                    if (cookie.getName().equals("Authorization")) {
-                        authorization = cookie.getValue();
-                    }
-                }
-            } else {
-                System.out.println("쿠기가 없습니다.");
-            }
-
             if (authorization == null) {
                 filterChain.doFilter(request, response);
 
                 return;
             }
 
-
-            String token = authorization;
+            String token = authorization.replace("Bearer ", "");
 
             if (jwtUtil.isExpired(token)) {
 
