@@ -19,4 +19,7 @@ public interface UserRecordRepository extends JpaRepository<UserRecord,Long> {
 
     List<UserRecordDto> findAllByUserId(Long userId);
 
+    @Query("SELECT SUM(ur.amount) FROM UserRecord ur")
+    Long sumAmount();
+
 }

@@ -9,16 +9,16 @@ import lombok.Setter;
 @Builder
 public class MainDto {
 
-    private int memberCount;
-    private int groupCount;
+    private long memberCount;
+    private long groupCount;
     private float totalWater;
 
-    public static MainDto of(int mc , int gc , float tw){
+    public static MainDto of(long memberCount , long groupCount , float totalWater){
 
         return MainDto.builder()
-                .memberCount(mc)
-                .groupCount(gc)
-                .totalWater(tw)
+                .memberCount(memberCount)
+                .groupCount(groupCount)
+                .totalWater(totalWater)
                 .build();
     }
 }
