@@ -8,15 +8,13 @@ import com.project.woomool.entity.Team;
 import com.project.woomool.entity.TeamDetail;
 import com.project.woomool.entity.User;
 import com.project.woomool.entity.UserDetail;
-import com.project.woomool.repository.TeamDetailRepository;
-import com.project.woomool.repository.TeamRepository;
-import com.project.woomool.repository.UserDetailRepository;
-import com.project.woomool.repository.UserRepository;
+import com.project.woomool.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +26,7 @@ public class UserDetailService {
     private final UserRepository userRepository;
     private final TeamDetailRepository teamDetailRepository;
     private final TeamRepository teamRepository;
+    private final UserRecordRepository userRecordRepository;
 
     public UserDetailDto addDetail(UserDetailRequest request , CustomOAuth2UserDTO userDto) {
 
@@ -70,6 +69,7 @@ public class UserDetailService {
             teamRepository.save(team);
         }
     }
+
 
 
 

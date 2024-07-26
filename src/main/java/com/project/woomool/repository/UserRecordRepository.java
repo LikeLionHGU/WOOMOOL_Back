@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -18,5 +20,18 @@ public interface UserRecordRepository extends JpaRepository<UserRecord,Long> {
     Float sumAmountByUserId(@Param("userId") Long userId);
 
     List<UserRecordDto> findAllByUserId(Long userId);
+
+    @Query("SELECT SUM(ur.amount) FROM UserRecord ur")
+    Long sumAmount();
+
+    @Query("SELECT DISTINCT ur.date FROM UserRecord ur " +
+            "JOIN UserDetail ud ON ur.user.id = ud.user.id " +
+            "GROUP BY ur.date ")
+    List<LocalDate> getPassDate(@Param("user") User user);
+
+//    @Query("SELECT DISTINCT ur.date FROM UserRecord ur " +
+//            "JOIN UserDetail ud ON ur.user.id = ud.user.id " +
+//            "GROUP BY ur.date " +
+//            "HAVING ur.amount >= (ud.recommendation) * 1000")
 
 }

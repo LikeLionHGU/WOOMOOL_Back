@@ -1,10 +1,7 @@
 package com.project.woomool.controller;
 
 import com.project.woomool.controller.request.UserDetailRequest;
-import com.project.woomool.controller.request.UserNickNameRequest;
-import com.project.woomool.controller.response.user.UserResponse;
 import com.project.woomool.controller.response.userDetail.UserDetailResponse;
-import com.project.woomool.controller.response.userRecordResponse.UserRecordListResponse;
 import com.project.woomool.dto.CustomOAuth2UserDTO;
 import com.project.woomool.dto.UserDetailDto;
 import com.project.woomool.service.UserDetailService;
@@ -40,5 +37,9 @@ public class UserDetailController {
         UserDetailResponse response = new UserDetailResponse(userDetailService.getUserDetailByUserId(userId));
         return ResponseEntity.ok(response);
     }
+
+
+
+
 
 }
