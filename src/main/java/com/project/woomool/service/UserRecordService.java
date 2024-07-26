@@ -10,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -82,6 +84,9 @@ public class UserRecordService {
         return records;
     }
 
-
+    public List<LocalDate> getUserDetailDateList(CustomOAuth2UserDTO userDto) {
+        User user = userRepository.findByEmail(userDto.getEmail());
+        return userRecordRepository.getPassDate(user);
+    }
 
 }
