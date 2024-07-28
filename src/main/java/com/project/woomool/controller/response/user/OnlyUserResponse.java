@@ -1,23 +1,23 @@
 package com.project.woomool.controller.response.user;
 
 import com.project.woomool.dto.UserDTO;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
-public class UserResponse {
+public class OnlyUserResponse {
 
+    private Long id;
     private String userName;
     private String nickName;
-    private String result;
+    private String email;
 
 
-    public UserResponse(String nickName, String userName,String result) {
-        this.userName = userName;
-        this.nickName = nickName;
-        this.result = result;
+    public OnlyUserResponse(UserDTO dto) {
+        this.id = dto.getId();
+        this.userName = dto.getUsername();
+        this.nickName = dto.getNickName();
+        this.email = dto.getEmail();
     }
-
 }
