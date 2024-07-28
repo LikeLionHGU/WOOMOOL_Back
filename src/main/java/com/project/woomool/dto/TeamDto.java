@@ -11,6 +11,8 @@ import lombok.Setter;
 @Builder
 public class TeamDto {
 
+
+    private Long TeamId;
     private String name;
     private String code;
     private int completeLevel; //팀의 달성 횟수
@@ -37,6 +39,7 @@ public class TeamDto {
     public static TeamDto of(Team team){
 
         return TeamDto.builder()
+                .TeamId(team.getId())
                 .name(team.getName())
                 .recommendation(team.getRecommendation())
                 .pastRecommendation(team.getPastRecommendation())

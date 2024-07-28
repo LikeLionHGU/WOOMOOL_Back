@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 public class TeamResponse {
+
+    private Long teamId;
     private String name;
     private String code;
     private float recommendation;
@@ -15,6 +17,7 @@ public class TeamResponse {
     private int dateCount; //일주일중 지난 날
 
     public TeamResponse(TeamDto dto) {
+        this.teamId = dto.getTeamId();
         this.name = dto.getName();
         this.code = dto.getCode();
         this.recommendation = dto.getRecommendation();

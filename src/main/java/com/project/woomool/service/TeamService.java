@@ -54,9 +54,10 @@ public class TeamService {
 
 
         TeamDto groupDto = TeamDto.of(request.getName(), initAmount, groupCode);
+        Team team = Team.of(groupDto);
 
-        teamRepository.save(Team.of(groupDto));
-        return groupDto;
+        teamRepository.save(team);
+        return TeamDto.of(team);
     }
 
     @Transactional
