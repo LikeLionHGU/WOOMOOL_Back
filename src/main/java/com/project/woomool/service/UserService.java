@@ -2,7 +2,10 @@ package com.project.woomool.service;
 
 import com.project.woomool.controller.request.UserNickNameRequest;
 import com.project.woomool.dto.CustomOAuth2UserDTO;
+import com.project.woomool.dto.UserDTO;
+import com.project.woomool.dto.UserDetailDto;
 import com.project.woomool.entity.User;
+import com.project.woomool.entity.UserDetail;
 import com.project.woomool.exception.NickNameExistsException;
 import com.project.woomool.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -25,6 +28,11 @@ public class UserService {
         User user = userRepository.findByEmail(userDto.getEmail());
 
         user.addNickName(request);
+    }
+
+    public UserDTO getUser(CustomOAuth2UserDTO userDto) {
+        User user = userRepository.findByEmail(userDto.getEmail());
+        return UserDTO.of(user);
     }
 
 }
