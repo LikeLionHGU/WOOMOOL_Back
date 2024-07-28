@@ -15,7 +15,8 @@ public class TeamDto {
     private String code;
     private int completeLevel; //팀의 달성 횟수
     private int dateCount;
-    private float finalRecommendation;
+    private float pastRecommendation;
+    private float todayRecommendation; //그룹 별 하루의 추천양
     private float recommendation;
     private float groupTotal;
 
@@ -24,7 +25,8 @@ public class TeamDto {
         return TeamDto.builder()
             .name(name)
             .recommendation(0)
-            .finalRecommendation(0)
+            .pastRecommendation(0)
+            .todayRecommendation(0)
             .completeLevel(0)
             .dateCount(0)
             .groupTotal(0)
@@ -37,7 +39,8 @@ public class TeamDto {
         return TeamDto.builder()
                 .name(team.getName())
                 .recommendation(team.getRecommendation())
-                .finalRecommendation(team.getFinalRecommendation())
+                .pastRecommendation(team.getPastRecommendation())
+                .todayRecommendation(team.getTodayRecommendation())
                 .groupTotal(team.getGroupTotal())
                 .completeLevel(team.getCompleteLevel())
                 .dateCount(team.getDateCount())

@@ -6,9 +6,12 @@ import com.project.woomool.dto.CustomOAuth2UserDTO;
 import com.project.woomool.dto.UserDetailDto;
 import com.project.woomool.service.UserDetailService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,6 +29,16 @@ public class UserDetailController {
         return ResponseEntity.ok(response);
     }
 
+    @PatchMapping("/update")
+    public ResponseEntity<UserDetailResponse> updateUserDetail(@RequestBody UserDetailRequest request,
+                                                         @AuthenticationPrincipal CustomOAuth2UserDTO userDto) throws IOException {
+
+        UserDetailDto dto = userDetailService.updateDetail(request, userDto);
+        UserDetailResponse response = new UserDetailResponse(dto);
+
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/get")
     public  ResponseEntity<UserDetailResponse> getDetail(@AuthenticationPrincipal CustomOAuth2UserDTO userDto) {
         UserDetailResponse response = new UserDetailResponse(userDetailService.getUserDetail(userDto));
@@ -37,6 +50,7 @@ public class UserDetailController {
         UserDetailResponse response = new UserDetailResponse(userDetailService.getUserDetailByUserId(userId));
         return ResponseEntity.ok(response);
     }
+
 
 
 

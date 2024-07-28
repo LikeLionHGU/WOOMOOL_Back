@@ -48,4 +48,17 @@ public class UserDetail extends Base{
             .user(user)
             .build();
     }
+
+    public void update(UserDetailRequest request, float bmi, float todayT){
+        this.weight = request.getWeight();
+        this.height=request.getHeight();
+        this.bmi=bmi;
+        this.recommendation=((request.getHeight()+ request.getWeight())/100)*1000;
+        if((this.recommendation*0.8)<=todayT&&(this.recommendation+350)>=todayT) {
+            this.hasDrankToday = true;
+        }else if((this.recommendation+350)<todayT){
+            this.hasDrankToday = false;
+            this.warnDrankToday = true;
+        }
+    }
 }

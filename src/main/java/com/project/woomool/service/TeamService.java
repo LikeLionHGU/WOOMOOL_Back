@@ -120,16 +120,22 @@ public class TeamService {
         for (Team team : teams) {
             if(team.getDateCount()>=6){
 
+                team.setRecommendation(team.getPastRecommendation()+(team.getTodayRecommendation()*(7-team.getDateCount())));
+
                 if(team.getGroupTotal()>=(team.getRecommendation()*0.8)){
                     team.plusCompleteLevel();
                 }
 
-                team.setRecommendation(team.getFinalRecommendation());
+                team.setPastRecommendation(0);
                 team.setGroupTotal(0);
                 team.setDateCount(0);
+                team.setTodayRecommendation(0);
 
             }else {
+                team.setRecommendation(team.getPastRecommendation()+(team.getTodayRecommendation()*(7-team.getDateCount())));
+                team.plusPastRecommendation(team.getTodayRecommendation());
                 team.plusDateCount();
+                team.setTodayRecommendation(0);
             }
             teamRepository.save(team);
         }

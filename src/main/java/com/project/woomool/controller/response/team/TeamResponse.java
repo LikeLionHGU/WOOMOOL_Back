@@ -13,7 +13,6 @@ public class TeamResponse {
     private float groupTotal;
     private int completeLevel; //팀의 달성 횟수
     private int dateCount; //일주일중 지난 날
-    private float finalRecommendation; //최종 물 양
 
     public TeamResponse(TeamDto dto) {
         this.name = dto.getName();
@@ -22,7 +21,6 @@ public class TeamResponse {
         this.groupTotal = dto.getGroupTotal();
         this.completeLevel = dto.getCompleteLevel();
         this.dateCount = dto.getDateCount();
-        this.finalRecommendation = dto.getFinalRecommendation();
     }
 
 }
