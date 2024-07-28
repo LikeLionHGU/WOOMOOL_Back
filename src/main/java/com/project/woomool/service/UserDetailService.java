@@ -37,6 +37,18 @@ public class UserDetailService {
         userDetailRepository.save(userDetail);
         return UserDetailDto.of(userDetail);
     }
+    @Transactional
+    public UserDetailDto updateDetail(UserDetailRequest request , CustomOAuth2UserDTO userDto) {
+
+        float bmi = (request.getWeight() / (request.getHeight() * request.getHeight()));
+        User user = userRepository.findByEmail(userDto.getEmail());
+        UserDetail userDetail = userDetailRepository.findByUser(user);
+
+        userDetail.update(request,bmi, userDetail.getTodayTotal());
+
+        userDetailRepository.save(userDetail);
+        return UserDetailDto.of(userDetail);
+    }
 
     public UserDetailDto getUserDetail(CustomOAuth2UserDTO userDto) {
         User user = userRepository.findByEmail(userDto.getEmail());
@@ -58,7 +70,15 @@ public class UserDetailService {
         for (UserDetail userDetail : userDetails) {
             TeamDetail teamDetail = teamDetailRepository.findTeamDetailByUser(userDetail.getUser());
             Team team = teamDetail.getTeam();
-            team.updateTotal(userDetail.getTodayTotal());
+
+            if(userDetail.isWarnDrankToday()&&!userDetail.isHasDrankToday()){
+                team.updateTotal(userDetail.getRecommendation());
+            }else{
+                team.updateTotal(userDetail.getTodayTotal());
+            }
+
+            team.updateTodayRecommendation(userDetail.getRecommendation());
+
             userDetail.setTodayTotal(0);
             if(userDetail.isHasDrankToday()){
                 userDetail.addDrankLevel();
