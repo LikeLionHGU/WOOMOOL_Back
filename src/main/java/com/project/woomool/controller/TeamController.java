@@ -1,5 +1,6 @@
 package com.project.woomool.controller;
 
+import com.project.woomool.controller.request.TeamCodeRequest;
 import com.project.woomool.controller.request.TeamJoinRequest;
 import com.project.woomool.controller.request.TeamRequest;
 import com.project.woomool.controller.response.team.TeamJoinResponse;
@@ -46,9 +47,9 @@ public class TeamController {
         return ResponseEntity.ok(response);
     }
 
-//    @GetMapping("/getGroupCode")
-//    public  ResponseEntity<TeamListResponse> getGroupList(@AuthenticationPrincipal CustomOAuth2UserDTO userDto) {
-//        TeamListResponse response = new TeamListResponse(teamService.getGroupList(userDto));
-//        return ResponseEntity.ok(response);
-//    }
+    @GetMapping("/getByCode")
+    public  ResponseEntity<TeamResponse> getGroupList(@RequestBody TeamCodeRequest request) {
+        TeamResponse response = new TeamResponse(teamService.getGroupByCode(request));
+        return ResponseEntity.ok(response);
+    }
 }

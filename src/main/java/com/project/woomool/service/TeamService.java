@@ -1,5 +1,6 @@
 package com.project.woomool.service;
 
+import com.project.woomool.controller.request.TeamCodeRequest;
 import com.project.woomool.controller.request.TeamJoinRequest;
 import com.project.woomool.controller.request.TeamRequest;
 import com.project.woomool.controller.response.ErrorResponse;
@@ -86,6 +87,12 @@ public class TeamService {
 
     public TeamDto getGroupInfo(Long groupId) {
         Team team = teamRepository.findTeamById(groupId);
+        return TeamDto.of(team);
+    }
+
+    public TeamDto getGroupByCode(TeamCodeRequest codeRequest) {
+        Team team = teamRepository.findTeamByCode(codeRequest.getTeamCode());
+
         return TeamDto.of(team);
     }
 
