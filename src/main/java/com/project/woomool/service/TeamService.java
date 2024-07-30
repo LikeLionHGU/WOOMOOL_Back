@@ -4,10 +4,7 @@ import com.project.woomool.controller.request.TeamCodeRequest;
 import com.project.woomool.controller.request.TeamJoinRequest;
 import com.project.woomool.controller.request.TeamRequest;
 import com.project.woomool.controller.response.ErrorResponse;
-import com.project.woomool.dto.CustomOAuth2UserDTO;
-import com.project.woomool.dto.TeamDetailDto;
-import com.project.woomool.dto.TeamDto;
-import com.project.woomool.dto.UserDetailDto;
+import com.project.woomool.dto.*;
 import com.project.woomool.entity.Team;
 import com.project.woomool.entity.TeamDetail;
 import com.project.woomool.entity.User;
@@ -90,10 +87,27 @@ public class TeamService {
         return TeamDto.of(team);
     }
 
+
     public TeamDto getGroupByCode(TeamCodeRequest codeRequest) {
         Team team = teamRepository.findTeamByCode(codeRequest.getTeamCode());
 
         return TeamDto.of(team);
+    }
+
+
+    public List<TeamUserDto> getGroupUsers(TeamCodeRequest codeRequest) {
+        Team team = teamRepository.findTeamByCode(codeRequest.getTeamCode());
+        List<TeamDetail> teamDetails = teamDetailRepository.findAllByTeam(team);
+
+        List<TeamUserDto> usersInfo = new ArrayList<>();
+        for(TeamDetail teamDetail: teamDetails){
+            User user = teamDetail.getUser();
+            float waterAmount = teamDetail.getWaterAmount();
+            usersInfo.add(TeamUserDto.of(user, waterAmount));
+
+        }
+
+        return usersInfo;
     }
 
 //    public List<TeamDetailDto> getGroupList(CustomOAuth2UserDTO userDto) {
@@ -132,6 +146,11 @@ public class TeamService {
 
                 if(team.getGroupTotal()>=(team.getRecommendation()*0.8)){
                     team.plusCompleteLevel();
+                }
+                List<TeamDetail> teamDetails = teamDetailRepository.findAllByTeam(team);
+                for(TeamDetail teamDetail:teamDetails){
+                    teamDetail.setWaterAmount(0);
+                    teamDetailRepository.save(teamDetail);
                 }
 
                 team.setPastRecommendation(0);

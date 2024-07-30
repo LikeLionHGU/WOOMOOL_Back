@@ -68,25 +68,32 @@ public class UserDetailService {
     public void autoUpdateWater() {
         List<UserDetail> userDetails = userDetailRepository.findAll();
         for (UserDetail userDetail : userDetails) {
-            TeamDetail teamDetail = teamDetailRepository.findTeamDetailByUser(userDetail.getUser());
-            Team team = teamDetail.getTeam();
+            List<TeamDetail> teamDetails = teamDetailRepository.findAllByUser(userDetail.getUser());
+            for(TeamDetail teamDetail:teamDetails) {
+                Team team = teamDetail.getTeam();
 
-            if(userDetail.isWarnDrankToday()&&!userDetail.isHasDrankToday()){
-                team.updateTotal(userDetail.getRecommendation());
-            }else{
-                team.updateTotal(userDetail.getTodayTotal());
+                if (userDetail.isWarnDrankToday() && !userDetail.isHasDrankToday()) {
+                    teamDetail.addWater(userDetail.getRecommendation());
+                    team.updateTotal(userDetail.getRecommendation());
+                } else {
+                    teamDetail.addWater(userDetail.getTodayTotal());
+                    team.updateTotal(userDetail.getTodayTotal());
+                }
+
+                team.updateTodayRecommendation(userDetail.getRecommendation());
+
+                teamRepository.save(team);
+                teamDetailRepository.save(teamDetail);
             }
 
-            team.updateTodayRecommendation(userDetail.getRecommendation());
-
             userDetail.setTodayTotal(0);
-            if(userDetail.isHasDrankToday()){
-                userDetail.addDrankLevel();
+            if (userDetail.isHasDrankToday()) {
+                    userDetail.addDrankLevel();
             }
             userDetail.setHasDrankToday(false);
             userDetail.setWarnDrankToday(false);
             userDetailRepository.save(userDetail);
-            teamRepository.save(team);
+
         }
     }
 

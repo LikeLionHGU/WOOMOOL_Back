@@ -5,6 +5,7 @@ import com.project.woomool.controller.request.TeamJoinRequest;
 import com.project.woomool.controller.request.TeamRequest;
 import com.project.woomool.controller.response.team.TeamJoinResponse;
 import com.project.woomool.controller.response.team.TeamResponse;
+import com.project.woomool.controller.response.team.TeamUserResponse;
 import com.project.woomool.controller.response.teamDetail.TeamListResponse;
 import com.project.woomool.controller.response.userDetail.UserDetailResponse;
 import com.project.woomool.dto.CustomOAuth2UserDTO;
@@ -42,14 +43,20 @@ public class TeamController {
     }
 
     @GetMapping("/{groupId}")
-    public  ResponseEntity<TeamResponse> getGroupInfo(@PathVariable Long groupId) {
+    public  ResponseEntity<TeamResponse> getGroupInfoById(@PathVariable Long groupId) {
         TeamResponse response = new TeamResponse(teamService.getGroupInfo(groupId));
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/getByCode")
-    public  ResponseEntity<TeamResponse> getGroupList(@RequestBody TeamCodeRequest request) {
+    public  ResponseEntity<TeamResponse> getGroupInfoByCode(@RequestBody TeamCodeRequest request) {
         TeamResponse response = new TeamResponse(teamService.getGroupByCode(request));
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/UsersByCode")
+    public  ResponseEntity<TeamUserResponse> getGroupUserByCode(@RequestBody TeamCodeRequest request) {
+        TeamUserResponse response = new TeamUserResponse(teamService.getGroupUsers(request));
         return ResponseEntity.ok(response);
     }
 }
