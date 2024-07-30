@@ -1,6 +1,8 @@
 package com.project.woomool.controller;
 
 import com.project.woomool.controller.request.UserRecordRequest;
+import com.project.woomool.controller.response.user.UserResponse;
+import com.project.woomool.controller.response.userRecordResponse.AddedResponse;
 import com.project.woomool.controller.response.userRecordResponse.UserRecordDateListResponse;
 import com.project.woomool.controller.response.userRecordResponse.UserRecordListResponse;
 import com.project.woomool.dto.CustomOAuth2UserDTO;
@@ -20,8 +22,11 @@ public class UserRecordController {
     private final UserRecordService userRecordService;
 
     @RequestMapping("/add")
-    public void addRecord(@RequestBody UserRecordRequest request , @AuthenticationPrincipal CustomOAuth2UserDTO userDto) {
+    public ResponseEntity<AddedResponse> addRecord(@RequestBody UserRecordRequest request , @AuthenticationPrincipal CustomOAuth2UserDTO userDto) {
         userRecordService.addRecord(request, userDto);
+
+        AddedResponse response = new AddedResponse("Successfully Added");
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/getRecords")
