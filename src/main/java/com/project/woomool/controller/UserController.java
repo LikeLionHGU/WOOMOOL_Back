@@ -1,6 +1,7 @@
 package com.project.woomool.controller;
 
 import com.project.woomool.controller.request.UserNickNameRequest;
+import com.project.woomool.controller.response.teamDetail.TeamListResponse;
 import com.project.woomool.controller.response.user.OnlyUserResponse;
 import com.project.woomool.controller.response.user.UserResponse;
 import com.project.woomool.controller.response.userDetail.UserDetailResponse;
@@ -33,6 +34,19 @@ public class UserController {
         OnlyUserResponse response = new OnlyUserResponse(userService.getUser(userDto));
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/getGroups")
+    public  ResponseEntity<TeamListResponse> getTeams(@AuthenticationPrincipal CustomOAuth2UserDTO userDto) {
+        TeamListResponse response = new TeamListResponse(userService.getTeamsByUser(userDto));
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/getGroupsById/{userId}")
+    public  ResponseEntity<TeamListResponse> getTeamsById(@PathVariable Long userId) {
+        TeamListResponse response = new TeamListResponse(userService.getTeamsByUserId(userId));
+        return ResponseEntity.ok(response);
+    }
+
 
 
 
