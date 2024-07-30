@@ -10,6 +10,8 @@ import com.project.woomool.entity.TeamDetail;
 import com.project.woomool.entity.User;
 import com.project.woomool.entity.UserDetail;
 import com.project.woomool.exception.AlreadyJoinedException;
+import com.project.woomool.exception.GroupNameExistsException;
+import com.project.woomool.exception.NickNameExistsException;
 import com.project.woomool.exception.TeamCodeNotExistsException;
 import com.project.woomool.repository.TeamDetailRepository;
 import com.project.woomool.repository.TeamRepository;
@@ -42,6 +44,9 @@ public class TeamService {
     private final UserDetailRepository userDetailRepository;
 
     public TeamDto createTeam(TeamRequest request, CustomOAuth2UserDTO userDto) {
+        if(teamRepository.existsTeamByName(request.getName())){
+            throw new GroupNameExistsException();
+        }
         User user = userRepository.findByEmail(userDto.getEmail());
         UserDetail userDetail = userDetailRepository.findByUser(user);
         float initAmount = userDetail.getRecommendation();
