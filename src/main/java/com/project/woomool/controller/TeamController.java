@@ -59,4 +59,10 @@ public class TeamController {
         TeamUserResponse response = new TeamUserResponse(teamService.getGroupUsers(request));
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/allGroups")
+    public  ResponseEntity<TeamListResponse> getAllGroup() {
+        TeamListResponse response = new TeamListResponse(teamService.getAllTeam());
+        return ResponseEntity.ok(response);
+    }
 }
