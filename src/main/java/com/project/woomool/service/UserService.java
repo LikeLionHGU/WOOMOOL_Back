@@ -38,6 +38,15 @@ public class UserService {
         user.addNickName(request);
     }
 
+    public String checkNickName(UserNickNameRequest request){
+        String result = "사용가능";
+        if(userRepository.existsByNickName(request.getNickName())){
+            result = "사용불가";
+        }
+
+        return result;
+    }
+
     public UserDTO getUser(CustomOAuth2UserDTO userDto) {
         User user = userRepository.findByEmail(userDto.getEmail());
         return UserDTO.of(user);
