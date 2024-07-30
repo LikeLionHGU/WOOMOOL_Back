@@ -5,6 +5,7 @@ import com.project.woomool.controller.response.teamDetail.TeamListResponse;
 import com.project.woomool.controller.response.user.OnlyUserResponse;
 import com.project.woomool.controller.response.user.UserResponse;
 import com.project.woomool.controller.response.userDetail.UserDetailResponse;
+import com.project.woomool.controller.response.userRecordResponse.AddedResponse;
 import com.project.woomool.dto.CustomOAuth2UserDTO;
 import com.project.woomool.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,12 @@ public class UserController {
 
         UserResponse response = new UserResponse(request.getNickName(),userDto.getUsername(),result);
 
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/nicknameCheck")
+    public ResponseEntity<AddedResponse> nickNameCheck(@RequestBody UserNickNameRequest request){
+        AddedResponse response = new AddedResponse(userService.checkNickName(request));
         return ResponseEntity.ok(response);
     }
 
