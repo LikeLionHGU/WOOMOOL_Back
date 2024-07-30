@@ -29,6 +29,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -108,6 +110,14 @@ public class TeamService {
         }
 
         return usersInfo;
+    }
+
+    public List<TeamDetailDto> getAllTeam() {
+        List<TeamDetail> teamDetails = teamDetailRepository.findAll();
+
+        return teamDetails.stream()
+                .map(TeamDetailDto::of)
+                .collect(Collectors.toList());
     }
 
 //    public List<TeamDetailDto> getGroupList(CustomOAuth2UserDTO userDto) {

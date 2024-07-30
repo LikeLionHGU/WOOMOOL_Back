@@ -19,5 +19,8 @@ public interface TeamDetailRepository extends JpaRepository<TeamDetail,Long> {
 
     List<TeamDetail> findAllByTeam(Team team);
 
+    List<TeamDetail> findAll();
+
+
     TeamDetail findTeamDetailByTeam(Team team);
 }
