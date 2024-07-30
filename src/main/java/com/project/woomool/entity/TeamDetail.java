@@ -23,10 +23,18 @@ public class TeamDetail {
     @JoinColumn(name = "Team_Id")
     private Team team;
 
+    private float waterAmount;
+
     public static TeamDetail of(User user, Team team) {
         return TeamDetail.builder()
             .user(user)
             .team(team)
+            .waterAmount(0)
             .build();
+    }
+
+
+    public void addWater(float amount) {
+        this.waterAmount += amount;
     }
 }

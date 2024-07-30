@@ -16,4 +16,8 @@ public interface TeamDetailRepository extends JpaRepository<TeamDetail,Long> {
     Boolean existsByTeam(Team team);
 
     List<TeamDetail> findAllByUser(User user);
+
+    List<TeamDetail> findAllByTeam(Team team);
+
+    TeamDetail findTeamDetailByTeam(Team team);
 }
