@@ -110,6 +110,8 @@ public class TeamService {
         for(TeamDetail teamDetail: teamDetails){
             User user = teamDetail.getUser();
             float waterAmount = teamDetail.getWaterAmount();
+//            float waterAmount = teamRepository.sumAmountByUserAndTeam(user,team);
+
             usersInfo.add(TeamUserDto.of(user, waterAmount));
 
         }
