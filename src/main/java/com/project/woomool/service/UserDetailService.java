@@ -1,5 +1,6 @@
 package com.project.woomool.service;
 
+import com.project.woomool.controller.request.CupRequest;
 import com.project.woomool.controller.request.UserDetailRequest;
 import com.project.woomool.dto.CustomOAuth2UserDTO;
 import com.project.woomool.dto.UserDetailDto;
@@ -33,6 +34,17 @@ public class UserDetailService {
         float bmi = (request.getWeight() / (request.getHeight() * request.getHeight()));
         User user = userRepository.findByEmail(userDto.getEmail());
         UserDetail userDetail = UserDetail.of(request,bmi,user);
+
+        userDetailRepository.save(userDetail);
+        return UserDetailDto.of(userDetail);
+    }
+
+    public UserDetailDto updateCup(CupRequest request , CustomOAuth2UserDTO userDto) {
+
+        User user = userRepository.findByEmail(userDto.getEmail());
+        UserDetail userDetail = userDetailRepository.findByUser(user);
+
+        userDetail.changeCup(request.getCup());
 
         userDetailRepository.save(userDetail);
         return UserDetailDto.of(userDetail);
