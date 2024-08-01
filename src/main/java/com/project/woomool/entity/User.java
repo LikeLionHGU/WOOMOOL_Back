@@ -24,6 +24,7 @@ public class User extends Base {
     private String role;
     private String name;
     private String nickName;
+    private int cup;
 
     public void addNickName(UserNickNameRequest request){
         this.nickName = request.getNickName();
