@@ -30,7 +30,7 @@ public class UserAttendanceService {
         return userAttendanceRepository.findAllByUserId(user.getId());
     }
 
-    @Scheduled(cron = "57 21 22 * * *")
+    @Scheduled(cron = "57 59 23 * * *")
     @Transactional
     public void autoUpdateAttendance() {
         List <User> users = userRepository.findAll();
