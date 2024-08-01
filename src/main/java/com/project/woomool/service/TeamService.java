@@ -95,15 +95,15 @@ public class TeamService {
     }
 
 
-    public TeamDto getGroupByCode(TeamCodeRequest codeRequest) {
-        Team team = teamRepository.findTeamByCode(codeRequest.getTeamCode());
+    public TeamDto getGroupByCode(String code) {
+        Team team = teamRepository.findTeamByCode(code);
 
         return TeamDto.of(team);
     }
 
 
-    public List<TeamUserDto> getGroupUsers(TeamCodeRequest codeRequest) {
-        Team team = teamRepository.findTeamByCode(codeRequest.getTeamCode());
+    public List<TeamUserDto> getGroupUsers(String code) {
+        Team team = teamRepository.findTeamByCode(code);
         List<TeamDetail> teamDetails = teamDetailRepository.findAllByTeam(team);
 
         List<TeamUserDto> usersInfo = new ArrayList<>();
