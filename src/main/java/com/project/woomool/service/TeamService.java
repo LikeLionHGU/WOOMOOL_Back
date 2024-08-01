@@ -47,6 +47,8 @@ public class TeamService {
         if(teamRepository.existsTeamByName(request.getName())){
             throw new GroupNameExistsException();
         }
+
+
         User user = userRepository.findByEmail(userDto.getEmail());
         UserDetail userDetail = userDetailRepository.findByUser(user);
         float initAmount = userDetail.getRecommendation();
