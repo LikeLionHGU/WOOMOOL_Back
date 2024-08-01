@@ -48,15 +48,15 @@ public class TeamController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/getByCode")
-    public  ResponseEntity<TeamResponse> getGroupInfoByCode(@RequestBody TeamCodeRequest request) {
-        TeamResponse response = new TeamResponse(teamService.getGroupByCode(request));
+    @GetMapping("/getByCode/{groupCode}")
+    public  ResponseEntity<TeamResponse> getGroupInfoByCode(@PathVariable String groupCode) {
+        TeamResponse response = new TeamResponse(teamService.getGroupByCode(groupCode));
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/UsersByCode")
-    public  ResponseEntity<TeamUserResponse> getGroupUserByCode(@RequestBody TeamCodeRequest request) {
-        TeamUserResponse response = new TeamUserResponse(teamService.getGroupUsers(request));
+    @GetMapping("/UsersByCode/{groupCode}")
+    public  ResponseEntity<TeamUserResponse> getGroupUserByCode(@PathVariable String groupCode) {
+        TeamUserResponse response = new TeamUserResponse(teamService.getGroupUsers(groupCode));
         return ResponseEntity.ok(response);
     }
 

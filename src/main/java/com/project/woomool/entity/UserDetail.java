@@ -24,6 +24,7 @@ public class UserDetail extends Base{
     private int hasDrankLevel;
     private boolean hasDrankToday;
     private boolean warnDrankToday;
+    private int cup;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="User_Id" )
@@ -45,6 +46,7 @@ public class UserDetail extends Base{
             .warnDrankToday(false)
             .hasDrankLevel(0)
             .todayTotal(0)
+            .cup(0)
             .user(user)
             .build();
     }
@@ -60,5 +62,9 @@ public class UserDetail extends Base{
             this.hasDrankToday = false;
             this.warnDrankToday = true;
         }
+    }
+
+    public void changeCup(int cup){
+        this.cup = cup;
     }
 }

@@ -1,5 +1,6 @@
 package com.project.woomool.controller;
 
+import com.project.woomool.controller.request.CupRequest;
 import com.project.woomool.controller.request.UserDetailRequest;
 import com.project.woomool.controller.response.userDetail.UserDetailResponse;
 import com.project.woomool.dto.CustomOAuth2UserDTO;
@@ -48,6 +49,15 @@ public class UserDetailController {
     @GetMapping("/{userId}")
     public  ResponseEntity<UserDetailResponse> getDetailByUserId(@PathVariable Long userId) {
         UserDetailResponse response = new UserDetailResponse(userDetailService.getUserDetailByUserId(userId));
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/updateCup")
+    public ResponseEntity<UserDetailResponse> updateCup(@RequestBody CupRequest request, @AuthenticationPrincipal CustomOAuth2UserDTO userDto) {
+
+        UserDetailDto dto = userDetailService.updateCup(request, userDto);
+        UserDetailResponse response = new UserDetailResponse(dto);
+
         return ResponseEntity.ok(response);
     }
 
