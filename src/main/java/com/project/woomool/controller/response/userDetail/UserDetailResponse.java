@@ -17,6 +17,7 @@ public class UserDetailResponse {
     private boolean hasDrankToday;
     private boolean warnDrankToday;
     private int cup;
+    private boolean attendance;
 
     public UserDetailResponse (UserDetailDto dto) {
             this.weight = dto.getWeight();
@@ -28,5 +29,6 @@ public class UserDetailResponse {
             this.hasDrankToday = dto.isHasDrankToday();
             this.warnDrankToday = dto.isWarnDrankToday();
             this.cup = dto.getCup();
+            this.attendance = dto.isAttendance();
     }
 }

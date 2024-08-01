@@ -49,6 +49,17 @@ public class UserDetailService {
         userDetailRepository.save(userDetail);
         return UserDetailDto.of(userDetail);
     }
+
+    public UserDetailDto attendance(CustomOAuth2UserDTO userDto) {
+
+        User user = userRepository.findByEmail(userDto.getEmail());
+        UserDetail userDetail = userDetailRepository.findByUser(user);
+
+        userDetail.setAttendance(true);
+
+        userDetailRepository.save(userDetail);
+        return UserDetailDto.of(userDetail);
+    }
     @Transactional
     public UserDetailDto updateDetail(UserDetailRequest request , CustomOAuth2UserDTO userDto) {
 

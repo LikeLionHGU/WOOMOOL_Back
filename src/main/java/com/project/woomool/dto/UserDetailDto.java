@@ -18,6 +18,9 @@ public class UserDetailDto {
     private boolean hasDrankToday;
     private boolean warnDrankToday;
     private int cup;
+    private int week;
+    private int weekDate;
+    private boolean attendance;
 
     public static UserDetailDto of(UserDetail userDetail) {
         UserDetailDto dto = new UserDetailDto();
@@ -29,6 +32,9 @@ public class UserDetailDto {
         dto.setTodayTotal(userDetail.getTodayTotal());
         dto.setWarnDrankToday(userDetail.isWarnDrankToday());
         dto.setRecommendation(userDetail.getRecommendation());
+        dto.setWeek(userDetail.getWeek());
+        dto.setWeekDate(userDetail.getWeekDate());
+        dto.setAttendance(userDetail.isAttendance());
         dto.setCup(userDetail.getCup());
         return dto;
     }
