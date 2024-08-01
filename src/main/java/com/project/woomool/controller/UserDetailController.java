@@ -61,6 +61,15 @@ public class UserDetailController {
         return ResponseEntity.ok(response);
     }
 
+    @PatchMapping("/attendance")
+    public ResponseEntity<UserDetailResponse> attendance(@AuthenticationPrincipal CustomOAuth2UserDTO userDto) {
+
+        UserDetailDto dto = userDetailService.attendance(userDto);
+        UserDetailResponse response = new UserDetailResponse(dto);
+
+        return ResponseEntity.ok(response);
+    }
+
 
 
 

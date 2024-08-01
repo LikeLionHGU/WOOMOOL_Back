@@ -25,6 +25,9 @@ public class UserDetail extends Base{
     private boolean hasDrankToday;
     private boolean warnDrankToday;
     private int cup;
+    private int week;
+    private int weekDate;
+    private boolean attendance;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="User_Id" )
@@ -35,6 +38,8 @@ public class UserDetail extends Base{
     }
 
     public void addDrankLevel(){this.hasDrankLevel++;}
+    public void addWeekDate(){this.weekDate++;}
+    public void addWeek(){this.week++;}
 
     public static UserDetail of(UserDetailRequest request, float bmi, User user) {
         return UserDetail.builder()
@@ -47,6 +52,9 @@ public class UserDetail extends Base{
             .hasDrankLevel(0)
             .todayTotal(0)
             .cup(0)
+            .week(1)
+            .weekDate(0)
+            .attendance(false)
             .user(user)
             .build();
     }
