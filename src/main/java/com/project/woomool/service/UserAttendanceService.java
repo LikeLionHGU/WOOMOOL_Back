@@ -42,8 +42,18 @@ public class UserAttendanceService {
             if(userDetail.getWeekDate()>=6){
                 userDetail.addWeek();
                 userDetail.setWeekDate(0);
+                userDetail.setWeekBeforeWater(0);
+                userDetail.setWeekBeforeRecommendation(0);
             }else{
+                if(userDetail.isWarnDrankToday()){
+                    userDetail.addWeekBeforeWater(userDetail.getRecommendation());
+                }else {
+                    userDetail.addWeekBeforeWater(userDetail.getTodayTotal());
+                }
+                userDetail.addWeekBeforeRecommendation(userDetail.getRecommendation());
                 userDetail.addWeekDate();
+                userDetail.setWeekRecommendation(userDetail.getWeekBeforeRecommendation()+(userDetail.getRecommendation()*(7-userDetail.getWeekDate())));
+
             }
             userDetail.setAttendance(false);
             userAttendanceRepository.save(userAttendance);

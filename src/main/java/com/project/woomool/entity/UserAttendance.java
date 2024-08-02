@@ -32,6 +32,15 @@ public class UserAttendance {
     private int dateCount;
     private boolean attendance;
 
+
+    private float weekBeforeWater;
+
+    private float weekBeforeRecommendation;
+
+
+    public void addWeekBeforeWater(float amount){this.weekBeforeWater+=amount;}
+
+    public void addWeekBeforeRecommendation(float amount){this.weekBeforeRecommendation+=amount;}
     public static UserRecord of(UserRecordDto dto,User user){
         return UserRecord.builder()
                 .user(user)
