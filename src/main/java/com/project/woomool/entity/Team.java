@@ -27,6 +27,7 @@ public class Team {
     private float todayRecommendation; //그룹 별 하루의 추천양
     private float recommendation;
     private float groupTotal;
+    private int peopleCount;
 
     public static Team of(TeamDto dto) {
         return Team.builder()
@@ -37,6 +38,7 @@ public class Team {
             .completeLevel(dto.getCompleteLevel())
             .dateCount(dto.getDateCount())
             .recommendation(dto.getRecommendation())
+                .peopleCount(dto.getPeopleCount())
             .groupTotal(dto.getGroupTotal())
             .build();
     }
@@ -59,6 +61,7 @@ public class Team {
 
     public void updateByJoin(float recommendation ) {
             this.recommendation += ((7-dateCount)*recommendation);
+            this.peopleCount += 1;
         }
     }
 

@@ -21,6 +21,7 @@ public class TeamDto {
     private float todayRecommendation; //그룹 별 하루의 추천양
     private float recommendation;
     private float groupTotal;
+    private int peopleCount;
 
     public static TeamDto of(String name , float recommendation , String code){
 
@@ -45,6 +46,7 @@ public class TeamDto {
                 .pastRecommendation(team.getPastRecommendation())
                 .todayRecommendation(team.getTodayRecommendation())
                 .groupTotal(team.getGroupTotal())
+                .peopleCount(team.getPeopleCount())
                 .completeLevel(team.getCompleteLevel())
                 .dateCount(team.getDateCount())
                 .code(team.getCode())

@@ -121,11 +121,19 @@ public class TeamService {
         return usersInfo;
     }
 
-    public List<TeamDetailDto> getAllTeam() {
-        List<TeamDetail> teamDetails = teamDetailRepository.findAll();
+//    public List<TeamDetailDto> getAllTeam() {
+//        List<TeamDetail> teamDetails = teamDetailRepository.findAll();
+//
+//        return teamDetails.stream()
+//                .map(TeamDetailDto::of)
+//                .collect(Collectors.toList());
+//    }
 
-        return teamDetails.stream()
-                .map(TeamDetailDto::of)
+    public List<TeamDto> getAllTeam(){
+        List<Team> teams = teamRepository.findAll();
+
+        return teams. stream()
+                .map(TeamDto::of)
                 .collect(Collectors.toList());
     }
 
