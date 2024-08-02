@@ -46,6 +46,7 @@ public class UserDetailController {
         return ResponseEntity.ok(response);
     }
 
+
     @GetMapping("/{userId}")
     public  ResponseEntity<UserDetailResponse> getDetailByUserId(@PathVariable Long userId) {
         UserDetailResponse response = new UserDetailResponse(userDetailService.getUserDetailByUserId(userId));

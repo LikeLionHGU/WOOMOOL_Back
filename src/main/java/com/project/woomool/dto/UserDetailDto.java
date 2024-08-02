@@ -22,6 +22,12 @@ public class UserDetailDto {
     private int weekDate;
     private boolean attendance;
 
+    private float weekBeforeWater;
+
+    private float weekBeforeRecommendation;
+
+    private float weekRecommendation;
+
     public static UserDetailDto of(UserDetail userDetail) {
         UserDetailDto dto = new UserDetailDto();
         dto.setWeight(userDetail.getWeight());
@@ -36,6 +42,9 @@ public class UserDetailDto {
         dto.setWeekDate(userDetail.getWeekDate());
         dto.setAttendance(userDetail.isAttendance());
         dto.setCup(userDetail.getCup());
+        dto.setWeekBeforeWater(userDetail.getWeekBeforeWater());
+        dto.setWeekBeforeRecommendation(userDetail.getWeekBeforeRecommendation());
+        dto.setWeekRecommendation(userDetail.getWeekRecommendation());
         return dto;
     }
 }

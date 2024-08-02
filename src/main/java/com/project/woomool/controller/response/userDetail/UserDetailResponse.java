@@ -21,6 +21,10 @@ public class UserDetailResponse {
     private int weekDate;
     private boolean attendance;
 
+    private float weekBeforeWater;
+
+    private float weekRecommendation;
+
     public UserDetailResponse (UserDetailDto dto) {
             this.weight = dto.getWeight();
             this.height = dto.getHeight();
@@ -34,5 +38,7 @@ public class UserDetailResponse {
             this.week = dto.getWeek();
             this.weekDate = dto.getWeekDate();
             this.attendance = dto.isAttendance();
+            this.weekBeforeWater = dto.getWeekBeforeWater();
+            this.weekRecommendation = dto.getWeekRecommendation();
     }
 }
