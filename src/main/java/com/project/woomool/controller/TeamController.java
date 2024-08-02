@@ -3,6 +3,7 @@ package com.project.woomool.controller;
 import com.project.woomool.controller.request.TeamCodeRequest;
 import com.project.woomool.controller.request.TeamJoinRequest;
 import com.project.woomool.controller.request.TeamRequest;
+import com.project.woomool.controller.response.team.EveryTeamResponse;
 import com.project.woomool.controller.response.team.TeamJoinResponse;
 import com.project.woomool.controller.response.team.TeamResponse;
 import com.project.woomool.controller.response.team.TeamUserResponse;
@@ -60,9 +61,16 @@ public class TeamController {
         return ResponseEntity.ok(response);
     }
 
+//    @GetMapping("/allGroups")
+//    public  ResponseEntity<TeamListResponse> getAllGroup() {
+//        TeamListResponse response = new TeamListResponse(teamService.getAllTeam());
+//        return ResponseEntity.ok(response);
+//    }
+
     @GetMapping("/allGroups")
-    public  ResponseEntity<TeamListResponse> getAllGroup() {
-        TeamListResponse response = new TeamListResponse(teamService.getAllTeam());
+    public  ResponseEntity<EveryTeamResponse> getAllGroup() {
+        EveryTeamResponse response = new EveryTeamResponse(teamService.getAllTeam());
         return ResponseEntity.ok(response);
     }
+
 }
