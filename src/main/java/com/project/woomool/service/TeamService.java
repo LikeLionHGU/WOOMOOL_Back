@@ -43,7 +43,7 @@ public class TeamService {
     private final TeamDetailRepository  teamDetailRepository;
     private final UserDetailRepository userDetailRepository;
 
-    public TeamDto createTeam(TeamRequest request, CustomOAuth2UserDTO userDto) {
+    public TeamDto createTeam(TeamRequest request, CustomOAuth2UserDTO userDto, String imageURL) {
         if(teamRepository.existsTeamByName(request.getName())){
             throw new GroupNameExistsException();
         }
@@ -60,7 +60,7 @@ public class TeamService {
         }
 
 
-        TeamDto groupDto = TeamDto.of(request.getName(), initAmount, groupCode);
+        TeamDto groupDto = TeamDto.of(request.getName(), initAmount, groupCode,imageURL);
         Team team = Team.of(groupDto);
 
         teamRepository.save(team);

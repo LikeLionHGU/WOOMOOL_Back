@@ -22,8 +22,9 @@ public class TeamDto {
     private float recommendation;
     private float groupTotal;
     private int peopleCount;
+    private String teamImage;
 
-    public static TeamDto of(String name , float recommendation , String code){
+    public static TeamDto of(String name , float recommendation , String code, String teamImage){
 
         return TeamDto.builder()
             .name(name)
@@ -34,6 +35,7 @@ public class TeamDto {
             .dateCount(0)
             .groupTotal(0)
             .code(code)
+                .teamImage(teamImage)
             .build();
     }
 
@@ -49,6 +51,7 @@ public class TeamDto {
                 .peopleCount(team.getPeopleCount())
                 .completeLevel(team.getCompleteLevel())
                 .dateCount(team.getDateCount())
+                .teamImage(team.getTeamImage())
                 .code(team.getCode())
                 .build();
     }

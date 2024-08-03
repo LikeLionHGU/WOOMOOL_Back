@@ -12,12 +12,16 @@ import com.project.woomool.controller.response.userDetail.UserDetailResponse;
 import com.project.woomool.dto.CustomOAuth2UserDTO;
 import com.project.woomool.dto.TeamDto;
 import com.project.woomool.exception.TeamCodeNotExistsException;
+import com.project.woomool.service.S3Uploader;
 import com.project.woomool.service.TeamService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.rmi.AlreadyBoundException;
 
 @RestController
@@ -26,10 +30,13 @@ import java.rmi.AlreadyBoundException;
 public class TeamController {
 
     private final TeamService teamService;
+    private final S3Uploader s3Uploader;
 
-    @PostMapping("/create")
-    public ResponseEntity<TeamResponse> createTeam(@RequestBody TeamRequest request, @AuthenticationPrincipal CustomOAuth2UserDTO userDto) {
-        TeamDto dto = teamService.createTeam(request, userDto);
+    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<TeamResponse> createTeam(@RequestParam(name = "image", required = false) MultipartFile image, TeamRequest request, @AuthenticationPrincipal CustomOAuth2UserDTO userDto) throws IOException {
+        String imageUrl = s3Uploader.upload(image,"example");
+        System.out.println("hello" + request.getName());
+        TeamDto dto = teamService.createTeam(request, userDto,imageUrl);
 
         TeamResponse response = new TeamResponse(dto);
         return ResponseEntity.ok(response);

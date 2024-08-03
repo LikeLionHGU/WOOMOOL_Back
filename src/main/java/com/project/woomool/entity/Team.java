@@ -28,6 +28,7 @@ public class Team {
     private float recommendation;
     private float groupTotal;
     private int peopleCount;
+    private String teamImage;
 
     public static Team of(TeamDto dto) {
         return Team.builder()
@@ -40,6 +41,7 @@ public class Team {
             .recommendation(dto.getRecommendation())
                 .peopleCount(dto.getPeopleCount())
             .groupTotal(dto.getGroupTotal())
+                .teamImage(dto.getTeamImage())
             .build();
     }
 
