@@ -24,17 +24,23 @@ public class TeamDetail {
     private Team team;
 
     private float waterAmount;
+    private float pastWaterRecommendation;
 
     public static TeamDetail of(User user, Team team) {
         return TeamDetail.builder()
             .user(user)
             .team(team)
             .waterAmount(0)
+            .pastWaterRecommendation(0)
             .build();
     }
 
 
     public void addWater(float amount) {
         this.waterAmount += amount;
+    }
+
+    public void addPastRecommendation(float amount) {
+        this.pastWaterRecommendation += amount;
     }
 }

@@ -107,7 +107,7 @@ public class UserDetailService {
                     teamDetail.addWater(userDetail.getTodayTotal());
                     team.updateTotal(userDetail.getTodayTotal());
                 }
-
+                teamDetail.addPastRecommendation(userDetail.getRecommendation());
                 team.updateTodayRecommendation(userDetail.getRecommendation());
 
                 teamRepository.save(team);

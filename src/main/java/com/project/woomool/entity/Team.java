@@ -1,10 +1,7 @@
 package com.project.woomool.entity;
 
 import com.project.woomool.dto.TeamDto;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -28,7 +25,10 @@ public class Team {
     private float recommendation;
     private float groupTotal;
     private int peopleCount;
+
+    @Column(length = 1000)
     private String teamImage;
+
 
     public static Team of(TeamDto dto) {
         return Team.builder()
@@ -49,22 +49,40 @@ public class Team {
         this.groupTotal += amount;
     }
 
+    public void minusTotal(float amount) {
+        this.groupTotal -= amount;
+    }
+
     public void updateTodayRecommendation(float amount) {
         this.todayRecommendation += amount;
+    }
+
+    public void minusTodayRecommendation(float amount) {
+        this.todayRecommendation -= amount;
     }
 
     public void plusPastRecommendation(float amount) {
         this.pastRecommendation += amount;
     }
 
+    public void minusPastRecommendation(float amount) {
+        this.pastRecommendation -= amount;
+    }
+
     public void plusDateCount(){this.dateCount++;}
 
     public void plusCompleteLevel(){this.completeLevel++;}
+    public void minusRecommendation(float amount){this.recommendation -= amount;}
 
-    public void updateByJoin(float recommendation ) {
+
+    public void minusPeople(){this.peopleCount--;}
+    public void updateByJoin(float recommendation, float todayWater ) {
             this.recommendation += ((7-dateCount)*recommendation);
+            this.groupTotal += todayWater;
             this.peopleCount += 1;
         }
+
+
     }
 
 
