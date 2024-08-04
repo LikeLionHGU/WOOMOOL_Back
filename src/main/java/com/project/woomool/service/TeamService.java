@@ -112,6 +112,7 @@ public class TeamService {
         if(teamDetail.getPastWaterRecommendation()==0){
             team.minusTotal(userDetail.getTodayTotal());
             team.minusRecommendation(teamDetail.getPastWaterRecommendation() + ((7 - team.getDateCount()) * userDetail.getRecommendation()));
+            team.minusPeople();
         }else {
             team.minusPastRecommendation(teamDetail.getPastWaterRecommendation());
             team.minusTodayRecommendation(userDetail.getRecommendation());
