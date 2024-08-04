@@ -9,6 +9,7 @@ import com.project.woomool.controller.response.team.TeamResponse;
 import com.project.woomool.controller.response.team.TeamUserResponse;
 import com.project.woomool.controller.response.teamDetail.TeamListResponse;
 import com.project.woomool.controller.response.userDetail.UserDetailResponse;
+import com.project.woomool.controller.response.userRecordResponse.AddedResponse;
 import com.project.woomool.dto.CustomOAuth2UserDTO;
 import com.project.woomool.dto.TeamDto;
 import com.project.woomool.exception.TeamCodeNotExistsException;
@@ -77,6 +78,14 @@ public class TeamController {
     @GetMapping("/allGroups")
     public  ResponseEntity<EveryTeamResponse> getAllGroup() {
         EveryTeamResponse response = new EveryTeamResponse(teamService.getAllTeam());
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/exit/{groupId}")
+    public ResponseEntity<TeamResponse> exitTeam(@PathVariable Long groupId, @AuthenticationPrincipal CustomOAuth2UserDTO userDto) {
+        TeamDto teamDto = teamService.exitGroup(groupId, userDto);
+
+        TeamResponse response = new TeamResponse(teamDto);
         return ResponseEntity.ok(response);
     }
 

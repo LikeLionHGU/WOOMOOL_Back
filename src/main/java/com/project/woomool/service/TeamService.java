@@ -85,7 +85,7 @@ public class TeamService {
 
             TeamDetail teamDetail = TeamDetail.of(user, team);
 
-            team.updateByJoin(amount);
+            team.updateByJoin(amount, userDetail.getTodayTotal());
             teamDetailRepository.save(teamDetail);
             teamRepository.save(team);
         }
@@ -99,6 +99,30 @@ public class TeamService {
 
     public TeamDto getGroupByCode(String code) {
         Team team = teamRepository.findTeamByCode(code);
+
+        return TeamDto.of(team);
+    }
+    @Transactional
+    public TeamDto exitGroup(Long groupId, CustomOAuth2UserDTO userDto) {
+        User user = userRepository.findByEmail(userDto.getEmail());
+        Team team = teamRepository.findTeamById(groupId);
+        TeamDetail teamDetail = teamDetailRepository.findTeamDetailByTeamAndUser(team, user);
+        UserDetail userDetail = userDetailRepository.findByUser(user);
+
+        if(teamDetail.getPastWaterRecommendation()==0){
+            team.minusTotal(userDetail.getTodayTotal());
+            team.minusRecommendation(teamDetail.getPastWaterRecommendation() + ((7 - team.getDateCount()) * userDetail.getRecommendation()));
+        }else {
+            team.minusPastRecommendation(teamDetail.getPastWaterRecommendation());
+            team.minusTodayRecommendation(userDetail.getRecommendation());
+            team.minusTotal(teamDetail.getWaterAmount()+userDetail.getTodayTotal());
+            team.minusRecommendation(teamDetail.getPastWaterRecommendation() + ((7 - team.getDateCount()) * userDetail.getRecommendation()));
+            team.minusPeople();
+        }
+        teamDetailRepository.deleteTeamDetailById(teamDetail.getId());
+        teamRepository.save(team);
+
+        //여기에 팀과 유저가 없을 시 exception
 
         return TeamDto.of(team);
     }
@@ -177,6 +201,7 @@ public class TeamService {
                 List<TeamDetail> teamDetails = teamDetailRepository.findAllByTeam(team);
                 for(TeamDetail teamDetail:teamDetails){
                     teamDetail.setWaterAmount(0);
+                    teamDetail.setPastWaterRecommendation(0);
                     teamDetailRepository.save(teamDetail);
                 }
 
