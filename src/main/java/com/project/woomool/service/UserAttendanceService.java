@@ -30,37 +30,37 @@ public class UserAttendanceService {
         return userAttendanceRepository.findAllByUserId(user.getId());
     }
 
-    @Scheduled(cron = "57 59 23 * * *")
-    @Transactional
-    public void autoUpdateAttendance() {
-        List <User> users = userRepository.findAll();
-        for (User user : users) {
-            UserDetail userDetail = userDetailRepository.findByUser(user);
-            UserAttendanceDto dto =  UserAttendanceDto.of(userDetail);
-            UserAttendance userAttendance = UserAttendance.of(dto, user);
-
-            if(userDetail.getWeekDate()>=6){
-                userDetail.addWeek();
-                userDetail.setWeekDate(0);
-                userDetail.setWeekBeforeWater(0);
-                userDetail.setWeekBeforeRecommendation(0);
-            }else{
-                if(userDetail.isWarnDrankToday()){
-                    userDetail.addWeekBeforeWater(userDetail.getRecommendation());
-                }else {
-                    userDetail.addWeekBeforeWater(userDetail.getTodayTotal());
-                }
-                userDetail.addWeekBeforeRecommendation(userDetail.getRecommendation());
-                userDetail.addWeekDate();
-                userDetail.setWeekRecommendation(userDetail.getWeekBeforeRecommendation()+(userDetail.getRecommendation()*(7-userDetail.getWeekDate())));
-
-            }
-            userDetail.setAttendance(false);
-            userAttendanceRepository.save(userAttendance);
-            userDetailRepository.save(userDetail);
-        }
-
-        }
+//    @Scheduled(cron = "57 59 23 * * *")
+//    @Transactional
+//    public void autoUpdateAttendance() {
+//        List <User> users = userRepository.findAll();
+//        for (User user : users) {
+//            UserDetail userDetail = userDetailRepository.findByUser(user);
+//            UserAttendanceDto dto =  UserAttendanceDto.of(userDetail);
+//            UserAttendance userAttendance = UserAttendance.of(dto, user);
+//
+//            if(userDetail.getWeekDate()>=6){
+//                userDetail.addWeek();
+//                userDetail.setWeekDate(0);
+//                userDetail.setWeekBeforeWater(0);
+//                userDetail.setWeekBeforeRecommendation(0);
+//            }else{
+//                if(userDetail.isWarnDrankToday()){
+//                    userDetail.addWeekBeforeWater(userDetail.getRecommendation());
+//                }else {
+//                    userDetail.addWeekBeforeWater(userDetail.getTodayTotal());
+//                }
+//                userDetail.addWeekBeforeRecommendation(userDetail.getRecommendation());
+//                userDetail.addWeekDate();
+//                userDetail.setWeekRecommendation(userDetail.getWeekBeforeRecommendation()+(userDetail.getRecommendation()*(7-userDetail.getWeekDate())));
+//
+//            }
+//            userDetail.setAttendance(false);
+//            userAttendanceRepository.save(userAttendance);
+//            userDetailRepository.save(userDetail);
+//        }
+//
+//        }
 
 
 }

@@ -3,12 +3,10 @@ package com.project.woomool.service;
 import com.project.woomool.controller.request.CupRequest;
 import com.project.woomool.controller.request.UserDetailRequest;
 import com.project.woomool.dto.CustomOAuth2UserDTO;
+import com.project.woomool.dto.UserAttendanceDto;
 import com.project.woomool.dto.UserDetailDto;
 import com.project.woomool.dto.UserRecordDto;
-import com.project.woomool.entity.Team;
-import com.project.woomool.entity.TeamDetail;
-import com.project.woomool.entity.User;
-import com.project.woomool.entity.UserDetail;
+import com.project.woomool.entity.*;
 import com.project.woomool.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +25,7 @@ public class UserDetailService {
     private final UserRepository userRepository;
     private final TeamDetailRepository teamDetailRepository;
     private final TeamRepository teamRepository;
+    private final UserAttendanceRepository userAttendanceRepository;
     private final UserRecordRepository userRecordRepository;
 
     public UserDetailDto addDetail(UserDetailRequest request , CustomOAuth2UserDTO userDto) {
@@ -86,13 +85,19 @@ public class UserDetailService {
         return UserDetailDto.of(userDetail);
     }
 
-    @Scheduled(cron = "58 59 23 * * *")
+    @Scheduled(cron = "00 55 23 * * *")
     @Transactional
     public void autoUpdateWater() {
-        List<UserDetail> userDetails = userDetailRepository.findAll();
-        for (UserDetail userDetail : userDetails) {
-            List<TeamDetail> teamDetails = teamDetailRepository.findAllByUser(userDetail.getUser());
-            for(TeamDetail teamDetail:teamDetails) {
+
+        List <User> users = userRepository.findAll();
+
+        for (User user : users) {
+            UserDetail userDetail = userDetailRepository.findByUser(user);
+            UserAttendanceDto dto = UserAttendanceDto.of(userDetail);
+            UserAttendance userAttendance = UserAttendance.of(dto, user);
+
+            List<TeamDetail> teamDetails = teamDetailRepository.findAllByUser(user);
+            for (TeamDetail teamDetail : teamDetails) {
                 Team team = teamDetail.getTeam();
 
                 if (userDetail.isWarnDrankToday() && !userDetail.isHasDrankToday()) {
@@ -109,19 +114,37 @@ public class UserDetailService {
                 teamDetailRepository.save(teamDetail);
             }
 
+
+            if (userDetail.getWeekDate() >= 6) {
+                userDetail.addWeek();
+                userDetail.setWeekDate(0);
+                userDetail.setWeekBeforeWater(0);
+                userDetail.setWeekBeforeRecommendation(0);
+            } else {
+                if (userDetail.isWarnDrankToday()) {
+                    userDetail.addWeekBeforeWater(userDetail.getRecommendation());
+                } else {
+                    userDetail.addWeekBeforeWater(userDetail.getTodayTotal());
+                }
+                userDetail.addWeekBeforeRecommendation(userDetail.getRecommendation());
+                userDetail.addWeekDate();
+                userDetail.setWeekRecommendation(userDetail.getWeekBeforeRecommendation() + (userDetail.getRecommendation() * (7 - userDetail.getWeekDate())));
+
+            }
+            userDetail.setAttendance(false);
+
             userDetail.setTodayTotal(0);
             if (userDetail.isHasDrankToday()) {
-                    userDetail.addDrankLevel();
+                userDetail.addDrankLevel();
             }
             userDetail.setHasDrankToday(false);
             userDetail.setWarnDrankToday(false);
+
+            userAttendanceRepository.save(userAttendance);
             userDetailRepository.save(userDetail);
 
         }
     }
-
-
-
 
 
 
