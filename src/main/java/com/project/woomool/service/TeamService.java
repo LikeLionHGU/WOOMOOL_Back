@@ -188,7 +188,7 @@ public class TeamService {
         }
     }
 
-    @Scheduled(cron = "00 59 23 * * *")
+    @Scheduled(cron = "00 02 01 * * *")
     @Transactional
     public void autoUpdateRestDay() {
         List<Team> teams = teamRepository.findAll();
@@ -201,10 +201,12 @@ public class TeamService {
                     team.plusCompleteLevel();
                 }
                 List<TeamDetail> teamDetails = teamDetailRepository.findAllByTeam(team);
-                for(TeamDetail teamDetail:teamDetails){
-                    teamDetail.setWaterAmount(0);
-                    teamDetail.setPastWaterRecommendation(0);
-                    teamDetailRepository.save(teamDetail);
+                if (!teamDetails.isEmpty()) {
+                    for (TeamDetail teamDetail : teamDetails) {
+                        teamDetail.setWaterAmount(0);
+                        teamDetail.setPastWaterRecommendation(0);
+                        teamDetailRepository.save(teamDetail);
+                    }
                 }
 
                 team.setPastRecommendation(0);

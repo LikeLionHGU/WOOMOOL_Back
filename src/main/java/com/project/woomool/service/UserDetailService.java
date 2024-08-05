@@ -85,7 +85,7 @@ public class UserDetailService {
         return UserDetailDto.of(userDetail);
     }
 
-    @Scheduled(cron = "00 55 23 * * *")
+    @Scheduled(cron = "00 00 01 * * *")
     @Transactional
     public void autoUpdateWater() {
 
@@ -93,8 +93,12 @@ public class UserDetailService {
 
         for (User user : users) {
             UserDetail userDetail = userDetailRepository.findByUser(user);
+            if (userDetail == null) {
+                continue;
+            }
             UserAttendanceDto dto = UserAttendanceDto.of(userDetail);
             UserAttendance userAttendance = UserAttendance.of(dto, user);
+            userAttendanceRepository.save(userAttendance);
 
             List<TeamDetail> teamDetails = teamDetailRepository.findAllByUser(user);
             for (TeamDetail teamDetail : teamDetails) {
@@ -140,7 +144,6 @@ public class UserDetailService {
             userDetail.setHasDrankToday(false);
             userDetail.setWarnDrankToday(false);
 
-            userAttendanceRepository.save(userAttendance);
             userDetailRepository.save(userDetail);
 
         }
