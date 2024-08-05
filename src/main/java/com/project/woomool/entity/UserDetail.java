@@ -35,7 +35,7 @@ public class UserDetail extends Base{
 
     private float weekRecommendation;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name ="User_Id" )
     private User user;
 
