@@ -120,8 +120,9 @@ public class TeamService {
             team.minusRecommendation(teamDetail.getPastWaterRecommendation() + ((7 - team.getDateCount()) * userDetail.getRecommendation()));
             team.minusPeople();
         }
-        teamDetailRepository.deleteTeamDetailById(teamDetail.getId());
+
         teamRepository.save(team);
+        teamDetailRepository.deleteTeamDetailById(teamDetail.getId());
 
         //여기에 팀과 유저가 없을 시 exception
 
