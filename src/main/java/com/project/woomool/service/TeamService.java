@@ -76,7 +76,7 @@ public class TeamService {
         }
             User user = userRepository.findByEmail(userDto.getEmail());
             Team team = teamRepository.findTeamByCode(request.getTeamCode());
-            if(teamDetailRepository.existsByUser(user) && teamDetailRepository.existsByTeam(team)){
+            if(teamDetailRepository.existsTeamDetailByUserAndTeam(user, team)){
                 throw new AlreadyJoinedException();
             }
 
