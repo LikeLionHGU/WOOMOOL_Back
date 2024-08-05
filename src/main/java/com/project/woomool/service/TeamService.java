@@ -5,18 +5,14 @@ import com.project.woomool.controller.request.TeamJoinRequest;
 import com.project.woomool.controller.request.TeamRequest;
 import com.project.woomool.controller.response.ErrorResponse;
 import com.project.woomool.dto.*;
-import com.project.woomool.entity.Team;
-import com.project.woomool.entity.TeamDetail;
-import com.project.woomool.entity.User;
-import com.project.woomool.entity.UserDetail;
+import com.project.woomool.entity.*;
 import com.project.woomool.exception.AlreadyJoinedException;
 import com.project.woomool.exception.GroupNameExistsException;
 import com.project.woomool.exception.NickNameExistsException;
 import com.project.woomool.exception.TeamCodeNotExistsException;
-import com.project.woomool.repository.TeamDetailRepository;
-import com.project.woomool.repository.TeamRepository;
-import com.project.woomool.repository.UserDetailRepository;
-import com.project.woomool.repository.UserRepository;
+import com.project.woomool.repository.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -42,6 +38,9 @@ public class TeamService {
     private final UserRepository userRepository;
     private final TeamDetailRepository  teamDetailRepository;
     private final UserDetailRepository userDetailRepository;
+    private final TeamRecordRepository teamRecordRepository;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public TeamDto createTeam(TeamRequest request, CustomOAuth2UserDTO userDto, String imageURL) {
         if(teamRepository.existsTeamByName(request.getName())){
@@ -121,12 +120,23 @@ public class TeamService {
             team.minusPeople();
         }
 
+        deleteRelatedEntities(team, user);
         teamRepository.save(team);
         teamDetailRepository.deleteTeamDetailById(teamDetail.getId());
+
 
         //여기에 팀과 유저가 없을 시 exception
 
         return TeamDto.of(team);
+    }
+
+    private void deleteRelatedEntities(Team team,User user) {
+        // 예: teamDetail이 team_record에 의해 참조되는 경우
+        List<TeamRecord> teamRecords = teamRecordRepository.findAllByUserAndTeam(user, team);
+        for (TeamRecord teamRecord : teamRecords) {
+            teamRecordRepository.delete(teamRecord);
+        }
+        // 다른 관련 엔티티도 여기에 추가하여 삭제하거나 무효화할 수 있습니다.
     }
 
 
