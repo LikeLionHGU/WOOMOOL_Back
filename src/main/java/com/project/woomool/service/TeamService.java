@@ -223,7 +223,7 @@ public class TeamService {
         }
     }
 
-    @Scheduled(cron = "58 35 19 * * *")
+    @Scheduled(cron = "00 55 23 * * *")
     @Transactional
     public void autoUpdateRestDay() {
         List<Team> teams = teamRepository.findAll();
