@@ -3,10 +3,7 @@ package com.project.woomool.controller;
 import com.project.woomool.controller.request.TeamCodeRequest;
 import com.project.woomool.controller.request.TeamJoinRequest;
 import com.project.woomool.controller.request.TeamRequest;
-import com.project.woomool.controller.response.team.EveryTeamResponse;
-import com.project.woomool.controller.response.team.TeamJoinResponse;
-import com.project.woomool.controller.response.team.TeamResponse;
-import com.project.woomool.controller.response.team.TeamUserResponse;
+import com.project.woomool.controller.response.team.*;
 import com.project.woomool.controller.response.teamDetail.TeamListResponse;
 import com.project.woomool.controller.response.teamRecord.TeamRecordListResponse;
 import com.project.woomool.controller.response.teamRecord.TeamRecordResponse;
@@ -65,6 +62,12 @@ public class TeamController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/getTodayByCode/{groupCode}")
+    public  ResponseEntity<TeamTodayResponse> getTodayGroupInfoByCode(@PathVariable String groupCode) {
+        TeamTodayResponse response = new TeamTodayResponse(teamService.getTodayGroupByCode(groupCode), teamService.getGroupByCode(groupCode).getRecommendation());
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/UsersByCode/{groupCode}")
     public  ResponseEntity<TeamUserResponse> getGroupUserByCode(@PathVariable String groupCode) {
         TeamUserResponse response = new TeamUserResponse(teamService.getGroupUsers(groupCode));
@@ -92,7 +95,7 @@ public class TeamController {
     }
 
 
-    @GetMapping("record/{groupdCode}")
+    @GetMapping("/record/{groupdCode}")
     public ResponseEntity<TeamRecordListResponse> getGroupRecord(@PathVariable String groupdCode) {
         TeamRecordListResponse response = new TeamRecordListResponse(teamService.getGroupTotalByDay(groupdCode));
         return ResponseEntity.ok(response);
