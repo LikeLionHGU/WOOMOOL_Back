@@ -107,21 +107,23 @@ public class TeamService {
         Team team = teamRepository.findTeamById(groupId);
         TeamDetail teamDetail = teamDetailRepository.findTeamDetailByTeamAndUser(team, user);
         UserDetail userDetail = userDetailRepository.findByUser(user);
-
-        if(teamDetail.getPastWaterRecommendation()==0){
+        if (teamDetail.getPastWaterRecommendation() == 0) {
             team.minusTotal(userDetail.getTodayTotal());
             team.minusRecommendation(teamDetail.getPastWaterRecommendation() + ((7 - team.getDateCount()) * userDetail.getRecommendation()));
             team.minusPeople();
-        }else {
+        } else {
             team.minusPastRecommendation(teamDetail.getPastWaterRecommendation());
             team.minusTodayRecommendation(userDetail.getRecommendation());
-            team.minusTotal(teamDetail.getWaterAmount()+userDetail.getTodayTotal());
+            team.minusTotal(teamDetail.getWaterAmount() + userDetail.getTodayTotal());
             team.minusRecommendation(teamDetail.getPastWaterRecommendation() + ((7 - team.getDateCount()) * userDetail.getRecommendation()));
             team.minusPeople();
         }
+        //updateTeamDetails(team, teamDetail, userDetail);
+
+        teamRepository.save(team);
 
         deleteRelatedEntities(team, user);
-        teamRepository.save(team);
+
         teamDetailRepository.deleteTeamDetailById(teamDetail.getId());
 
 
@@ -129,6 +131,20 @@ public class TeamService {
 
         return TeamDto.of(team);
     }
+
+//    private void updateTeamDetails(Team team, TeamDetail teamDetail, UserDetail userDetail) {
+//        if (teamDetail.getPastWaterRecommendation() == 0) {
+//            team.minusTotal(userDetail.getTodayTotal());
+//            team.minusRecommendation(teamDetail.getPastWaterRecommendation() + ((7 - team.getDateCount()) * userDetail.getRecommendation()));
+//            team.minusPeople();
+//        } else {
+//            team.minusPastRecommendation(teamDetail.getPastWaterRecommendation());
+//            team.minusTodayRecommendation(userDetail.getRecommendation());
+//            team.minusTotal(teamDetail.getWaterAmount() + userDetail.getTodayTotal());
+//            team.minusRecommendation(teamDetail.getPastWaterRecommendation() + ((7 - team.getDateCount()) * userDetail.getRecommendation()));
+//            team.minusPeople();
+//        }
+//    }
 
     private void deleteRelatedEntities(Team team,User user) {
         // 예: teamDetail이 team_record에 의해 참조되는 경우
@@ -198,7 +214,7 @@ public class TeamService {
         }
     }
 
-    @Scheduled(cron = "00 02 01 * * *")
+    @Scheduled(cron = "00 30 03 * * *")
     @Transactional
     public void autoUpdateRestDay() {
         List<Team> teams = teamRepository.findAll();
@@ -234,6 +250,13 @@ public class TeamService {
         }
     }
 
+    public List<TeamRecordDto> getGroupTotalByDay(String teamCode){
+        Team team = teamRepository.findTeamByCode(teamCode);
+        List<TeamRecord> records = teamRecordRepository.findAllByTeamGroupedByDay(team);
+
+
+        return records.stream().map(TeamRecordDto::of).collect(Collectors.toList());
+    }
 
 
 }
