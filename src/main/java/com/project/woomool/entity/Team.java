@@ -78,7 +78,7 @@ public class Team {
     public void minusPeople(){this.peopleCount--;}
     public void updateByJoin(float recommendation, float todayWater ) {
             this.recommendation += ((7-dateCount)*recommendation);
-            this.groupTotal += todayWater;
+            this.todayRecommendation += recommendation;
             this.peopleCount += 1;
         }
 

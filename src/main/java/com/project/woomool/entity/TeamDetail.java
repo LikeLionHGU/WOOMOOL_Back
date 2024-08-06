@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TeamDetail {
+public class TeamDetail extends Base{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -85,7 +85,7 @@ public class UserDetailService {
         return UserDetailDto.of(userDetail);
     }
 
-    @Scheduled(cron = "00 29 03 * * *")
+    @Scheduled(cron = "59 35 19 * * *")
     @Transactional
     public void autoUpdateWater() {
 
@@ -148,6 +148,7 @@ public class UserDetailService {
 
         }
     }
+
 
 
 

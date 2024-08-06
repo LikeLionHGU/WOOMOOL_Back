@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.rmi.AlreadyBoundException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -101,6 +102,14 @@ public class TeamService {
 
         return TeamDto.of(team);
     }
+
+    public float getTodayGroupByCode(String code) {
+        Team team = teamRepository.findTeamByCode(code);
+        LocalDate today = LocalDate.now();
+        return teamRecordRepository.getSumTodayWater(team, today);
+    }
+
+
     @Transactional
     public TeamDto exitGroup(Long groupId, CustomOAuth2UserDTO userDto) {
         User user = userRepository.findByEmail(userDto.getEmail());
@@ -215,7 +224,7 @@ public class TeamService {
         }
     }
 
-    @Scheduled(cron = "00 30 03 * * *")
+    @Scheduled(cron = "58 35 19 * * *")
     @Transactional
     public void autoUpdateRestDay() {
         List<Team> teams = teamRepository.findAll();
@@ -246,6 +255,7 @@ public class TeamService {
                 team.plusPastRecommendation(team.getTodayRecommendation());
                 team.plusDateCount();
                 team.setTodayRecommendation(0);
+
             }
             teamRepository.save(team);
         }
