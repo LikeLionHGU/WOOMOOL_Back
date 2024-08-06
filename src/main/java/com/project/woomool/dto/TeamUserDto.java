@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Builder
 @Getter
 @NoArgsConstructor
@@ -18,16 +20,18 @@ public class TeamUserDto {
     private String nickName;
     private float waterAmount;
     private float recommendation;
+    private LocalDate joinDate;
 
 
 
-    public static TeamUserDto of(User user, float water, float recommendation) {
+    public static TeamUserDto of(User user, float water, float recommendation,LocalDate joinDate) {
         return TeamUserDto.builder()
                 .userId(user.getId())
                 .username(user.getUsername())
                 .nickName(user.getNickName())
                 .waterAmount(water)
                 .recommendation(recommendation)
+                .joinDate(joinDate)
                 .build();
     }
 

@@ -5,6 +5,7 @@ import lombok.Builder;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 @Builder
 public class TeamRecordDto {
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     private float amount;
 

@@ -11,6 +11,7 @@ import com.project.woomool.controller.response.userDetail.UserDetailResponse;
 import com.project.woomool.controller.response.userRecordResponse.AddedResponse;
 import com.project.woomool.dto.CustomOAuth2UserDTO;
 import com.project.woomool.dto.TeamDto;
+import com.project.woomool.entity.TeamRecord;
 import com.project.woomool.exception.TeamCodeNotExistsException;
 import com.project.woomool.service.S3Uploader;
 import com.project.woomool.service.TeamService;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.rmi.AlreadyBoundException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -100,4 +102,7 @@ public class TeamController {
         TeamRecordListResponse response = new TeamRecordListResponse(teamService.getGroupTotalByDay(groupdCode));
         return ResponseEntity.ok(response);
     }
-}
+
+
+
+    }

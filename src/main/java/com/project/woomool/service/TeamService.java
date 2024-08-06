@@ -15,6 +15,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -174,9 +175,7 @@ public class TeamService {
             User user = teamDetail.getUser();
             UserDetail userDetail = userDetailRepository.findByUser(user);
             float waterAmount = teamDetail.getWaterAmount();
-//            float waterAmount = teamRepository.sumAmountByUserAndTeam(user,team);
-
-            usersInfo.add(TeamUserDto.of(user, waterAmount, teamDetail.getPastWaterRecommendation()+(userDetail.getRecommendation()*(7-team.getDateCount() ))));
+            usersInfo.add(TeamUserDto.of(user, waterAmount, teamDetail.getPastWaterRecommendation()+(userDetail.getRecommendation()*(7-team.getDateCount() )),userDetail.getCreatedDate().toLocalDate()));
 
         }
 
@@ -268,6 +267,10 @@ public class TeamService {
 
         return records.stream().map(TeamRecordDto::of).collect(Collectors.toList());
     }
-
+    public List<TeamRecord> hello (String groupcode){
+        Team team = teamRepository.findTeamByCode(groupcode);
+        List<TeamRecord> records = teamRecordRepository.findAllByTeamGroupedByDay(team);
+        return records;
+    }
 
 }
