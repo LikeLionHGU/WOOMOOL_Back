@@ -8,6 +8,8 @@ import com.project.woomool.controller.response.team.TeamJoinResponse;
 import com.project.woomool.controller.response.team.TeamResponse;
 import com.project.woomool.controller.response.team.TeamUserResponse;
 import com.project.woomool.controller.response.teamDetail.TeamListResponse;
+import com.project.woomool.controller.response.teamRecord.TeamRecordListResponse;
+import com.project.woomool.controller.response.teamRecord.TeamRecordResponse;
 import com.project.woomool.controller.response.userDetail.UserDetailResponse;
 import com.project.woomool.controller.response.userRecordResponse.AddedResponse;
 import com.project.woomool.dto.CustomOAuth2UserDTO;
@@ -89,4 +91,10 @@ public class TeamController {
         return ResponseEntity.ok(response);
     }
 
+
+    @GetMapping("record/{groupdCode}")
+    public ResponseEntity<TeamRecordListResponse> getGroupRecord(@PathVariable String groupdCode) {
+        TeamRecordListResponse response = new TeamRecordListResponse(teamService.getGroupTotalByDay(groupdCode));
+        return ResponseEntity.ok(response);
+    }
 }
