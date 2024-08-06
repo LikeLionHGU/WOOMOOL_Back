@@ -17,15 +17,17 @@ public class TeamUserDto {
     private String username;
     private String nickName;
     private float waterAmount;
+    private float recommendation;
 
 
 
-    public static TeamUserDto of(User user, float water) {
+    public static TeamUserDto of(User user, float water, float recommendation) {
         return TeamUserDto.builder()
                 .userId(user.getId())
                 .username(user.getUsername())
                 .nickName(user.getNickName())
                 .waterAmount(water)
+                .recommendation(recommendation)
                 .build();
     }
 

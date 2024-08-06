@@ -163,10 +163,11 @@ public class TeamService {
         List<TeamUserDto> usersInfo = new ArrayList<>();
         for(TeamDetail teamDetail: teamDetails){
             User user = teamDetail.getUser();
+            UserDetail userDetail = userDetailRepository.findByUser(user);
             float waterAmount = teamDetail.getWaterAmount();
 //            float waterAmount = teamRepository.sumAmountByUserAndTeam(user,team);
 
-            usersInfo.add(TeamUserDto.of(user, waterAmount));
+            usersInfo.add(TeamUserDto.of(user, waterAmount, teamDetail.getPastWaterRecommendation()+(userDetail.getRecommendation()*(7-team.getDateCount() ))));
 
         }
 
