@@ -23,8 +23,8 @@ public class TeamDetail extends Base{
     @JoinColumn(name = "Team_Id")
     private Team team;
 
-    private float waterAmount;
-    private float pastWaterRecommendation;
+    private float waterAmount; //어제까지 마신 물의 양  - 추가하는 것 완료, * 리셋 부분 미완료
+    private float pastWaterRecommendation; //어제까지의 추천량의 합
 
     public static TeamDetail of(User user, Team team) {
         return TeamDetail.builder()

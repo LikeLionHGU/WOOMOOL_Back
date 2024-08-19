@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserRecord{
+public class UserRecord{ //마실때마다 기록됨
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

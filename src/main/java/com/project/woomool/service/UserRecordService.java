@@ -51,6 +51,9 @@ public class UserRecordService {
 
                 for (TeamDetail teamDetail : teamDetails) {
                     Team team = teamDetail.getTeam();
+                    if(!userDetail.isWarnDrankToday()) {
+                        teamDetail.addWater(request.getAmount());
+                    }
                     if (team != null) {
                         teams.add(team);
                         System.out.println("Added " + team.getName());
@@ -59,7 +62,10 @@ public class UserRecordService {
 
                 for (Team team : teams) {
                     TeamRecord teamRecord = TeamRecord.of(userRecord, team);
-                    team.updateTotal(request.getAmount());
+                    if(!userDetail.isWarnDrankToday()){
+                        team.updateTotal(request.getAmount());
+
+                    }
                     teamRecordRepository.save(teamRecord);
                     System.out.println(team.getCode() + " 저장됨");
                 }

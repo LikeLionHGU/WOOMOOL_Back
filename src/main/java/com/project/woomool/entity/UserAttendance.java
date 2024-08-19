@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserAttendance {
+public class UserAttendance { //과거의 기록 보여줄때 사용
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -92,27 +92,21 @@ public class UserDetailService {
         List <User> users = userRepository.findAll();
 
         for (User user : users) {
-            UserDetail userDetail = userDetailRepository.findByUser(user);
-            if (userDetail == null) {
+            UserDetail userDetail = userDetailRepository.findByUser(user); //모든 유저 찾기
+            if (userDetail == null) { //유저가 가입만하고 자기꺼 입력안했으면 스킵
                 continue;
             }
-            UserAttendanceDto dto = UserAttendanceDto.of(userDetail);
-            UserAttendance userAttendance = UserAttendance.of(dto, user);
-            userAttendanceRepository.save(userAttendance);
+            UserAttendanceDto dto = UserAttendanceDto.of(userDetail); //출석체크
+            UserAttendance userAttendance = UserAttendance.of(dto, user); //출섹체크 기록
+            userAttendanceRepository.save(userAttendance); //저장
 
-            List<TeamDetail> teamDetails = teamDetailRepository.findAllByUser(user);
+            List<TeamDetail> teamDetails = teamDetailRepository.findAllByUser(user); //팀 찾기
+
             for (TeamDetail teamDetail : teamDetails) {
                 Team team = teamDetail.getTeam();
 
-                if (userDetail.isWarnDrankToday() && !userDetail.isHasDrankToday()) {
-                    teamDetail.addWater(userDetail.getRecommendation());
-                    team.updateTotal(userDetail.getRecommendation());
-                } else {
-                    teamDetail.addWater(userDetail.getTodayTotal());
-                    team.updateTotal(userDetail.getTodayTotal());
-                }
                 teamDetail.addPastRecommendation(userDetail.getRecommendation());
-                team.updateTodayRecommendation(userDetail.getRecommendation());
+                team.updateTodayRecommendation(userDetail.getRecommendation()); //그룹별 하루 추천량 만드는 듯 근데 리셋 하고 해야하지 않나?
 
                 teamRepository.save(team);
                 teamDetailRepository.save(teamDetail);
@@ -124,6 +118,7 @@ public class UserDetailService {
                 userDetail.setWeekDate(0);
                 userDetail.setWeekBeforeWater(0);
                 userDetail.setWeekBeforeRecommendation(0);
+                userDetail.setWeekRecommendation(userDetail.getRecommendation() * 7);
             } else {
                 if (userDetail.isWarnDrankToday()) {
                     userDetail.addWeekBeforeWater(userDetail.getRecommendation());
@@ -146,6 +141,45 @@ public class UserDetailService {
 
             userDetailRepository.save(userDetail);
 
+        }
+        //모든 팀 업데이트 해야함
+        //모든 개인 초기화가 위에서 이루어짐
+    }
+
+    @Scheduled(cron = "00 55 23 * * *")
+    @Transactional
+    public void autoUpdateRestDay() {
+        List<Team> teams = teamRepository.findAll();
+        for (Team team : teams) {
+            if(team.getDateCount()>=6){
+
+                team.setRecommendation(team.getPastRecommendation()+(team.getTodayRecommendation()*(7-team.getDateCount())));
+
+                if(team.getGroupTotal()>=(team.getRecommendation()*0.8)){
+                    team.plusCompleteLevel();
+                }
+                List<TeamDetail> teamDetails = teamDetailRepository.findAllByTeam(team);
+                if (!teamDetails.isEmpty()) {
+                    for (TeamDetail teamDetail : teamDetails) {
+                        teamDetail.setWaterAmount(0);
+                        teamDetail.setPastWaterRecommendation(0);
+                        teamDetailRepository.save(teamDetail);
+                    }
+                }
+
+                team.setPastRecommendation(0);
+                team.setGroupTotal(0);
+                team.setDateCount(0);
+                team.setTodayRecommendation(0);
+
+            }else {
+                team.setRecommendation(team.getPastRecommendation()+(team.getTodayRecommendation()*(7-team.getDateCount())));
+                team.plusPastRecommendation(team.getTodayRecommendation());
+                team.plusDateCount();
+                team.setTodayRecommendation(0);
+
+            }
+            teamRepository.save(team);
         }
     }
 

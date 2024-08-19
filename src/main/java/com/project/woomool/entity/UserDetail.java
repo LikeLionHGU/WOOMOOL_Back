@@ -19,21 +19,21 @@ public class UserDetail extends Base{
     private float weight;
     private float height;
     private float bmi;
-    private float recommendation;
-    private float todayTotal;
-    private int hasDrankLevel;
-    private boolean hasDrankToday;
-    private boolean warnDrankToday;
+    private float recommendation; // 오늘 마셔야 하는 양
+    private float todayTotal; //오늘 마신 양
+    private int hasDrankLevel; //0
+    private boolean hasDrankToday; //완
+    private boolean warnDrankToday; //0
     private int cup;
-    private int week;
-    private int weekDate;
+    private int week; //유저 시작한지 몇주차인지
+    private int weekDate; // 일주일중 몇일 지났는지
     private boolean attendance;
 
-    private float weekBeforeWater;
+    private float weekBeforeWater; //지난 일주일 마신 양
 
-    private float weekBeforeRecommendation;
+    private float weekBeforeRecommendation; //지난 일주일 추천량
 
-    private float weekRecommendation;
+    private float weekRecommendation; // 처음 들어올때는 *7, 그 다음날부터는 weekBeforeRecommendation + recommendation*7
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name ="User_Id" )

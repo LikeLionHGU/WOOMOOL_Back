@@ -22,9 +22,9 @@ public class Team {
     private int dateCount; //일주일중 지난 날
     private float pastRecommendation; //지난 검증된 물의 양
     private float todayRecommendation; //그룹 별 하루의 추천양
-    private float recommendation;
-    private float groupTotal;
-    private int peopleCount;
+    private float recommendation; //위 두개를 합친걸껄?
+    private float groupTotal; // 그룹이 마신 양  - 추가하는 것 완료, * 리셋 부분 미완료
+    private int peopleCount;//
 
     @Column(length = 1000)
     private String teamImage;

@@ -223,42 +223,42 @@ public class TeamService {
         }
     }
 
-    @Scheduled(cron = "00 55 23 * * *")
-    @Transactional
-    public void autoUpdateRestDay() {
-        List<Team> teams = teamRepository.findAll();
-        for (Team team : teams) {
-            if(team.getDateCount()>=6){
-
-                team.setRecommendation(team.getPastRecommendation()+(team.getTodayRecommendation()*(7-team.getDateCount())));
-
-                if(team.getGroupTotal()>=(team.getRecommendation()*0.8)){
-                    team.plusCompleteLevel();
-                }
-                List<TeamDetail> teamDetails = teamDetailRepository.findAllByTeam(team);
-                if (!teamDetails.isEmpty()) {
-                    for (TeamDetail teamDetail : teamDetails) {
-                        teamDetail.setWaterAmount(0);
-                        teamDetail.setPastWaterRecommendation(0);
-                        teamDetailRepository.save(teamDetail);
-                    }
-                }
-
-                team.setPastRecommendation(0);
-                team.setGroupTotal(0);
-                team.setDateCount(0);
-                team.setTodayRecommendation(0);
-
-            }else {
-                team.setRecommendation(team.getPastRecommendation()+(team.getTodayRecommendation()*(7-team.getDateCount())));
-                team.plusPastRecommendation(team.getTodayRecommendation());
-                team.plusDateCount();
-                team.setTodayRecommendation(0);
-
-            }
-            teamRepository.save(team);
-        }
-    }
+//    @Scheduled(cron = "00 55 23 * * *")
+//    @Transactional
+//    public void autoUpdateRestDay() {
+//        List<Team> teams = teamRepository.findAll();
+//        for (Team team : teams) {
+//            if(team.getDateCount()>=6){
+//
+//                team.setRecommendation(team.getPastRecommendation()+(team.getTodayRecommendation()*(7-team.getDateCount())));
+//
+//                if(team.getGroupTotal()>=(team.getRecommendation()*0.8)){
+//                    team.plusCompleteLevel();
+//                }
+//                List<TeamDetail> teamDetails = teamDetailRepository.findAllByTeam(team);
+//                if (!teamDetails.isEmpty()) {
+//                    for (TeamDetail teamDetail : teamDetails) {
+//                        teamDetail.setWaterAmount(0);
+//                        teamDetail.setPastWaterRecommendation(0);
+//                        teamDetailRepository.save(teamDetail);
+//                    }
+//                }
+//
+//                team.setPastRecommendation(0);
+//                team.setGroupTotal(0);
+//                team.setDateCount(0);
+//                team.setTodayRecommendation(0);
+//
+//            }else {
+//                team.setRecommendation(team.getPastRecommendation()+(team.getTodayRecommendation()*(7-team.getDateCount())));
+//                team.plusPastRecommendation(team.getTodayRecommendation());
+//                team.plusDateCount();
+//                team.setTodayRecommendation(0);
+//
+//            }
+//            teamRepository.save(team);
+//        }
+//    }
 
     public List<TeamRecordDto> getGroupTotalByDay(String teamCode){
         Team team = teamRepository.findTeamByCode(teamCode);
