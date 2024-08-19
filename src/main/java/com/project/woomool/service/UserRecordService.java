@@ -35,7 +35,7 @@ public class UserRecordService {
             UserRecord userRecord = UserRecord.of(dto,user);
             userDetail.updateTotal(request.getAmount());
 
-            if(userDetail.getTodayTotal()>=(userDetail.getRecommendation()*0.8)&&userDetail.getTodayTotal()<(userDetail.getRecommendation()+350)){
+            if((userDetail.getTodayTotal()>=(userDetail.getRecommendation()*0.8))&&(userDetail.getTodayTotal()<(userDetail.getRecommendation()+350))){
                 userDetail.setHasDrankToday(true);
             }else if(userDetail.getTodayTotal()>=(userDetail.getRecommendation()+350)){
                 userDetail.setHasDrankToday(false);
@@ -43,6 +43,7 @@ public class UserRecordService {
             }
 
             userRecordRepository.save(userRecord);
+            userDetailRepository.save(userDetail);
 
             if(teamDetailRepository.existsByUser(user)) {
                 List<TeamDetail> teamDetails = teamDetailRepository.findAllByUser(user);
@@ -58,6 +59,7 @@ public class UserRecordService {
                         teams.add(team);
                         System.out.println("Added " + team.getName());
                     }
+                    teamDetailRepository.save(teamDetail);
                 }
 
                 for (Team team : teams) {
@@ -69,7 +71,7 @@ public class UserRecordService {
                     teamRecordRepository.save(teamRecord);
                     System.out.println(team.getCode() + " 저장됨");
                 }
-                userDetailRepository.save(userDetail);
+
             }
     }
 
