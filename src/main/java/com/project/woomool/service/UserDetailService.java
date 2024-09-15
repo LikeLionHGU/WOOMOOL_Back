@@ -85,7 +85,7 @@ public class UserDetailService {
         return UserDetailDto.of(userDetail);
     }
 
-    @Scheduled(cron = "00 07 17 * * *")
+    @Scheduled(cron = "00 18 17 * * *")
     @Transactional
     public void autoUpdateWater() {
 
@@ -105,11 +105,13 @@ public class UserDetailService {
             for (TeamDetail teamDetail : teamDetails) {
                 Team team = teamDetail.getTeam();
 
-                teamDetail.addPastRecommendation(userDetail.getRecommendation());
-                team.updateTodayRecommendation(userDetail.getRecommendation()); //그룹별 하루 추천량 만드는 듯 근데 리셋 하고 해야하지 않나?
+                float recommendation = userDetail.getRecommendation();
+                teamDetail.addPastRecommendation(recommendation);
+                team.updateTodayRecommendation(recommendation);
 
-                teamRepository.save(team);
                 teamDetailRepository.save(teamDetail);
+                teamRepository.save(team);
+
             }
 
 
@@ -149,7 +151,7 @@ public class UserDetailService {
         //모든 개인 초기화가 위에서 이루어짐
     }
 
-    @Scheduled(cron = "00 06 17 * * *")
+    @Scheduled(cron = "00 17 17 * * *")
     @Transactional
     public void autoUpdateRestDay() {
         List<Team> teams = teamRepository.findAll();
