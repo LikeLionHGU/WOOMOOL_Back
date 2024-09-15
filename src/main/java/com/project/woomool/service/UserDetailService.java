@@ -85,7 +85,7 @@ public class UserDetailService {
         return UserDetailDto.of(userDetail);
     }
 
-    @Scheduled(cron = "00 58 23 * * *")
+    @Scheduled(cron = "00 57 16 * * *")
     @Transactional
     public void autoUpdateWater() {
 
@@ -132,11 +132,14 @@ public class UserDetailService {
             }
             userDetail.setAttendance(false);
 
-            userDetail.setTodayTotal(0);
+            float todayWater = userDetail.getTodayTotal();
             if (userDetail.isHasDrankToday()) {
                 userDetail.addDrankLevel();
+                userDetail.setTodayTotal(0); // 초기화
+                userDetail.setHasDrankToday(false);
+            } else {
+                userDetail.setTodayTotal(0); // 초기화
             }
-            userDetail.setHasDrankToday(false);
             userDetail.setWarnDrankToday(false);
 
             userDetailRepository.save(userDetail);
@@ -146,7 +149,7 @@ public class UserDetailService {
         //모든 개인 초기화가 위에서 이루어짐
     }
 
-    @Scheduled(cron = "00 55 23 * * *")
+    @Scheduled(cron = "00 56 16 * * *")
     @Transactional
     public void autoUpdateRestDay() {
         List<Team> teams = teamRepository.findAll();
