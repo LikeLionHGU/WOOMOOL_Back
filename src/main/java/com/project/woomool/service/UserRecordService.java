@@ -7,12 +7,10 @@ import com.project.woomool.entity.*;
 import com.project.woomool.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,74 +23,83 @@ public class UserRecordService {
     private final TeamRepository teamRepository;
     private final UserRepository userRepository;
     private final TeamRecordRepository teamRecordRepository;
-    private final TeamDetailRepository  teamDetailRepository;
+    private final TeamDetailRepository teamDetailRepository;
 
     @Transactional
     public void addRecord(UserRecordRequest request, CustomOAuth2UserDTO userDto) {
-            User user = userRepository.findByEmail(userDto.getEmail());
-            UserDetail userDetail = userDetailRepository.findByUser(user);
-            UserRecordDto dto =  UserRecordDto.of(request.getAmount());
-            UserRecord userRecord = UserRecord.of(dto,user);
-            userDetail.updateTotal(request.getAmount());
+        User user = userRepository.findByEmail(userDto.getEmail());
+        UserDetail userDetail = userDetailRepository.findByUser(user);
 
-            if((userDetail.getTodayTotal()>=(userDetail.getRecommendation()*0.8))&&(userDetail.getTodayTotal()<(userDetail.getRecommendation()+350))){
-                userDetail.setHasDrankToday(true);
-            }else if(userDetail.getTodayTotal()>=(userDetail.getRecommendation()+350)){
-                userDetail.setHasDrankToday(false);
-                userDetail.setWarnDrankToday(true);
-            }
+        // 사용자 물 기록 생성
+        UserRecordDto dto = UserRecordDto.of(request.getAmount());
+        UserRecord userRecord = UserRecord.of(dto, user);
 
-            userRecordRepository.save(userRecord);
-            userDetailRepository.save(userDetail);
+        // 오늘 마신 총량 업데이트
+        userDetail.updateTotal(request.getAmount());
 
-            if(teamDetailRepository.existsByUser(user)) {
-                List<TeamDetail> teamDetails = teamDetailRepository.findAllByUser(user);
+        // 사용자가 추천량의 80% 이상 마셨을 때 상태 업데이트
+        if ((userDetail.getTodayTotal() >= (userDetail.getRecommendation() * 0.8))
+                && (userDetail.getTodayTotal() < (userDetail.getRecommendation() + 350))) {
+            userDetail.setHasDrankToday(true);
+        } else if (userDetail.getTodayTotal() >= (userDetail.getRecommendation() + 350)) {
+            userDetail.setHasDrankToday(false);
+            userDetail.setWarnDrankToday(true);
+        }
 
-                List<Team> teams = new ArrayList<>();
+        // 사용자 기록 저장
+        userRecordRepository.save(userRecord);
+        userDetailRepository.save(userDetail);
 
-                for (TeamDetail teamDetail : teamDetails) {
-                    Team team = teamDetail.getTeam();
-                    if(!userDetail.isWarnDrankToday()) {
-                        teamDetail.addWater(request.getAmount());
-                    }
-                    if (team != null) {
-                        teams.add(team);
-                        System.out.println("Added " + team.getName());
-                    }
-                    teamDetailRepository.save(teamDetail);
+        // 팀 관련 처리
+        if (teamDetailRepository.existsByUser(user)) {
+            List<TeamDetail> teamDetails = teamDetailRepository.findAllByUser(user);
+            List<Team> teams = new ArrayList<>();
+
+            // 팀 디테일 업데이트
+            for (TeamDetail teamDetail : teamDetails) {
+                Team team = teamDetail.getTeam();
+
+                // 경고 상태가 아니면 팀 디테일에 물 기록 추가
+                if (!userDetail.isWarnDrankToday()) {
+                    teamDetail.addWater(request.getAmount());
                 }
 
-                for (Team team : teams) {
-                    TeamRecord teamRecord = TeamRecord.of(userRecord, team);
-                    if(!userDetail.isWarnDrankToday()){
-                        team.updateTotal(request.getAmount());
-
-                    }
-                    teamRecordRepository.save(teamRecord);
-                    System.out.println(team.getCode() + " 저장됨");
+                if (team != null) {
+                    teams.add(team);
+                    System.out.println("Added " + team.getName());
                 }
 
+                // 팀 디테일 저장
+                teamDetailRepository.save(teamDetail);
             }
+
+            // 팀 기록 업데이트
+            for (Team team : teams) {
+                TeamRecord teamRecord = TeamRecord.of(userRecord, team);
+
+                // 팀의 총량 업데이트는 이미 teamDetail에서 처리되므로 중복 업데이트 방지
+                teamRecordRepository.save(teamRecord);
+                System.out.println(team.getCode() + " 저장됨");
+            }
+        }
     }
 
+    // 사용자 기록 조회
     public List<UserRecordDto> getRecords(CustomOAuth2UserDTO userDto) {
         User user = userRepository.findByEmail(userDto.getEmail());
         return userRecordRepository.findAllByUserId(user.getId());
     }
 
-
-
-
+    // 특정 사용자 ID로 기록 조회
     public List<UserRecordDto> getRecordsById(Long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         User user = optionalUser.orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
-        List<UserRecordDto> records = userRecordRepository.findAllByUserId(user.getId());
-        return records;
+        return userRecordRepository.findAllByUserId(user.getId());
     }
 
+    // 사용자 물 기록 날짜 조회
     public List<LocalDate> getUserDetailDateList(CustomOAuth2UserDTO userDto) {
         User user = userRepository.findByEmail(userDto.getEmail());
         return userRecordRepository.getPassDate(user);
     }
-
 }
