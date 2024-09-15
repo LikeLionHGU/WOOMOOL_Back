@@ -85,7 +85,7 @@ public class UserDetailService {
         return UserDetailDto.of(userDetail);
     }
 
-    @Scheduled(cron = "00 57 16 * * *")
+    @Scheduled(cron = "00 07 17 * * *")
     @Transactional
     public void autoUpdateWater() {
 
@@ -149,7 +149,7 @@ public class UserDetailService {
         //모든 개인 초기화가 위에서 이루어짐
     }
 
-    @Scheduled(cron = "00 56 16 * * *")
+    @Scheduled(cron = "00 06 17 * * *")
     @Transactional
     public void autoUpdateRestDay() {
         List<Team> teams = teamRepository.findAll();
