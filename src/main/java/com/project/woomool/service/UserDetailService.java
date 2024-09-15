@@ -86,7 +86,7 @@ public class UserDetailService {
         return UserDetailDto.of(userDetail);
     }
 
-    @Scheduled(cron = "00 35 17 * * *")
+    @Scheduled(cron = "00 02 20 * * *")
     @Synchronized
     @Transactional
     public void autoUpdateWater() {
@@ -146,14 +146,14 @@ public class UserDetailService {
             }
             userDetail.setWarnDrankToday(false);
 
-            userDetailRepository.save(userDetail);
+    //        userDetailRepository.save(userDetail);
 
         }
         //모든 팀 업데이트 해야함
         //모든 개인 초기화가 위에서 이루어짐
     }
 
-    @Scheduled(cron = "00 34 17 * * *")
+    @Scheduled(cron = "00 01 20 * * *")
     @Transactional
     public void autoUpdateRestDay() {
         List<Team> teams = teamRepository.findAll();
