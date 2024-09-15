@@ -52,8 +52,8 @@ public class UserRecordService {
 
                 for (TeamDetail teamDetail : teamDetails) {
                     Team team = teamDetail.getTeam();
-                    if(!userDetail.isWarnDrankToday()) {
-                        teamDetail.addWater(request.getAmount());
+                    if (!userDetail.isWarnDrankToday()) {
+                        teamDetail.addWater(request.getAmount());  // 팀 디테일에만 추가
                     }
                     if (team != null) {
                         teams.add(team);
@@ -64,13 +64,14 @@ public class UserRecordService {
 
                 for (Team team : teams) {
                     TeamRecord teamRecord = TeamRecord.of(userRecord, team);
-                    if(!userDetail.isWarnDrankToday()){
-                        team.updateTotal(request.getAmount());
-
+                    if (!userDetail.isWarnDrankToday()) {
+                        // 팀의 총량 업데이트 로직을 TeamDetail에서 처리하므로 이 부분 삭제
+                        // team.updateTotal(request.getAmount());
                     }
                     teamRecordRepository.save(teamRecord);
                     System.out.println(team.getCode() + " 저장됨");
                 }
+
 
             }
     }

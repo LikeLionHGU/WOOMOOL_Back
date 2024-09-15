@@ -10,6 +10,7 @@ import com.project.woomool.entity.*;
 import com.project.woomool.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.Synchronized;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -85,7 +86,8 @@ public class UserDetailService {
         return UserDetailDto.of(userDetail);
     }
 
-    @Scheduled(cron = "00 18 17 * * *")
+    @Scheduled(cron = "00 35 17 * * *")
+    @Synchronized
     @Transactional
     public void autoUpdateWater() {
 
@@ -151,7 +153,7 @@ public class UserDetailService {
         //모든 개인 초기화가 위에서 이루어짐
     }
 
-    @Scheduled(cron = "00 17 17 * * *")
+    @Scheduled(cron = "00 34 17 * * *")
     @Transactional
     public void autoUpdateRestDay() {
         List<Team> teams = teamRepository.findAll();
