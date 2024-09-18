@@ -73,7 +73,7 @@ public class UserDetailService {
         return UserDetailDto.of(userDetail);
     }
 
-    @Scheduled(cron = "30 58 23 * * *")
+    @Scheduled(cron = "30 27 20 * * *")
     @Synchronized
     @Transactional
     public void autoUpdateWater() {
@@ -140,7 +140,7 @@ public class UserDetailService {
                 + (userDetail.getRecommendation() * (7 - userDetail.getWeekDate())));
     }
 
-    @Scheduled(cron = "00 57 23 * * *")
+    @Scheduled(cron = "00 26 20 * * *")
     @Transactional
     public void autoUpdateRestDay() {
 
