@@ -73,7 +73,7 @@ public class UserDetailService {
         return UserDetailDto.of(userDetail);
     }
 
-    @Scheduled(cron = "30 36 20 * * *")
+    @Scheduled(cron = "30 7 21 * * *")
     @Synchronized
     @Transactional
     public void autoUpdateWater() {
@@ -92,7 +92,7 @@ public class UserDetailService {
     private void processUserAttendance(UserDetail userDetail, User user) {
         UserAttendanceDto dto = UserAttendanceDto.of(userDetail);
         UserAttendance userAttendance = UserAttendance.of(dto, user);
-        userAttendanceRepository.save(userAttendance);
+        //userAttendanceRepository.save(userAttendance);
     }
 
     private void processTeamUpdates(User user, UserDetail userDetail) {
@@ -140,7 +140,7 @@ public class UserDetailService {
                 + (userDetail.getRecommendation() * (7 - userDetail.getWeekDate())));
     }
 
-    @Scheduled(cron = "00 35 20 * * *")
+    @Scheduled(cron = "00 06 21 * * *")
     @Transactional
     public void autoUpdateRestDay() {
 
