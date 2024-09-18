@@ -26,11 +26,11 @@ public class TeamDetail extends Base{
     private float waterAmount; //어제까지 마신 물의 양  - 추가하는 것 완료, * 리셋 부분 미완료
     private float pastWaterRecommendation; //어제까지의 추천량의 합
 
-    public static TeamDetail of(User user, Team team) {
+    public static TeamDetail of(User user, Team team, float water) {
         return TeamDetail.builder()
             .user(user)
             .team(team)
-            .waterAmount(0)
+            .waterAmount(water)
             .pastWaterRecommendation(0)
             .build();
     }
@@ -38,6 +38,9 @@ public class TeamDetail extends Base{
 
     public void addWater(float amount) {
         this.waterAmount += amount;
+    }
+    public void minusWater(float amount) {
+        this.waterAmount -= amount;
     }
 
     public void addPastRecommendation(float amount) {

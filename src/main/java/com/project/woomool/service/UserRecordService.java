@@ -62,6 +62,11 @@ public class UserRecordService {
                 // 경고 상태가 아니면 팀 디테일에 물 기록 추가
                 if (!userDetail.isWarnDrankToday()) {
                     teamDetail.addWater(request.getAmount());
+                } else {
+                    if(userDetail.getTodayTotal()-request.getAmount()<userDetail.getRecommendation()){
+                        teamDetail.addWater(userDetail.getRecommendation()-(userDetail.getTodayTotal()-request.getAmount()));
+                    }
+
                 }
 
                 if (team != null) {

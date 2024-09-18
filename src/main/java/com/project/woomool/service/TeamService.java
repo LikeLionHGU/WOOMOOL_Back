@@ -84,7 +84,7 @@ public class TeamService {
             UserDetail userDetail = userDetailRepository.findByUser(user);
             float amount = userDetail.getRecommendation();
 
-            TeamDetail teamDetail = TeamDetail.of(user, team);
+            TeamDetail teamDetail = TeamDetail.of(user, team, userDetail.getTodayTotal());
 
             team.updateByJoin(amount, userDetail.getTodayTotal());
             teamDetailRepository.save(teamDetail);

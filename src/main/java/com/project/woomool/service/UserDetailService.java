@@ -73,7 +73,7 @@ public class UserDetailService {
         return UserDetailDto.of(userDetail);
     }
 
-    @Scheduled(cron = "00 39 00 * * *")
+    @Scheduled(cron = "30 58 23 * * *")
     @Synchronized
     @Transactional
     public void autoUpdateWater() {
@@ -140,9 +140,16 @@ public class UserDetailService {
                 + (userDetail.getRecommendation() * (7 - userDetail.getWeekDate())));
     }
 
-    @Scheduled(cron = "00 38 00 * * *")
+    @Scheduled(cron = "00 57 23 * * *")
     @Transactional
     public void autoUpdateRestDay() {
+
+        List<TeamDetail> teamDetails = teamDetailRepository.findAll();
+        for(TeamDetail teamDetail : teamDetails){
+            updateTeamWater(teamDetail);
+        }
+
+
         List<Team> teams = teamRepository.findAll();
         for (Team team : teams) {
             if (team.getDateCount() >= 6) {
@@ -152,6 +159,12 @@ public class UserDetailService {
             }
             teamRepository.save(team);
         }
+    }
+
+    private void updateTeamWater(TeamDetail teamDetail) {
+       Team team = teamDetail.getTeam();
+       team.updateTotal(teamDetail.getWaterAmount());
+        teamRepository.save(team);
     }
 
     private void resetTeamData(Team team) {
